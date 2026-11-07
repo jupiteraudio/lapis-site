@@ -190,7 +190,7 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 /* print */
 #printRoot{display:none}
 @page{size:A4 landscape;margin:12mm}
-@media print{
+@media print{ .termbtn,.term{display:none!important}
   :root,:root[data-theme]{color-scheme:light!important}
   html,body{background:#fff!important;color:#000!important}
   .bar,main,#banner,dialog{display:none!important}
@@ -211,7 +211,7 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
   .pr-page table{width:100%;border-collapse:collapse}
   .pr-page th{background:#e6e6e6;text-align:left;padding:4px 6px;border:1px solid #888;font-size:10px}
   .pr-page td{padding:3px 6px;border:1px solid #aaa;vertical-align:top}
-  .pr-page tr,.pr-page tbody{break-inside:avoid}
+  .pr-page tr{break-inside:avoid}
   .pr-page thead{display:table-header-group}
   .pr-page tr.sec td{background:#f0f0f0;font-weight:700;font-size:11.5px}
   .pr-page td.q{text-align:center;font-weight:700}
@@ -10859,6 +10859,143 @@ const SDShowSchema = (() => {
 })();
 if (typeof module !== 'undefined') module.exports = SDShowSchema; else (typeof window !== 'undefined' ? window : self).SDShowSchema = SDShowSchema;
 </script>
+<script id="show-ops">/* Show operations (pure, no DOM; runs in the page, Node, a worker and any future CLI / MCP server).
+   The operations an agent (or a script) may perform on a show, extracted from the terminal assistant's tools so that the
+   app, the headless driver, the CLI and the MCP server all call the same code. Rules:
+   - Every operation takes a show object and NEVER mutates it: it returns { ok, show, changed, errors, dry_run }.
+   - dry_run: true returns the same result without keeping anything (the caller's show is untouched either way).
+   - Calls are idempotent: the same call twice leaves the same show and the second reports no change.
+   - Errors are structured { path, message, valid } (same shape as SDShowSchema) so an AI client can repair its call.
+   - The result is validated with SDShowSchema (when loaded); a change that breaks the show is refused and nothing is kept.
+   - Agent-made values are flagged in show.review (path -> { by, at }) until a human clears them; this is how "agent-made,
+     not reviewed" reaches Push to desk. Operations never touch hardware. */
+const SDShowOps = (() => {
+  const NO_EDIT = ['id', 'created', 'updated', 'console'];
+  const ROOTS_NEW = ['mon', 'rf', 'net', 'lp', 'rider', 'live'];
+  const IN_FIELDS = ['src', 'mic', 'phantom', 'stand', 'clip', 'multi', 'notes', 'port', 'portB', 'portC', 'portD', 'name'];
+  const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const short = v => { const s = v === undefined ? '(none)' : JSON.stringify(v); return s.length > 90 ? s.slice(0, 87) + '…' : s; };
+  const parts = p => String(p || '').trim().replace(/^show\.?/, '').replace(/\[(\d+|\+)\]/g, '.$1').split('.').filter(Boolean);
+  const getAt = (show, ps) => { let o = show; for (const k of ps) { if (o == null) return undefined; o = o[k]; } return o; };
+  const shape = v => Array.isArray(v) ? `list of ${v.length}` + (v.length && typeof v[0] === 'object' ? `; fields: ${Object.keys(v[0] || {}).join(', ')}` : '')
+    : v && typeof v === 'object' ? `object with ${Object.keys(v).length} keys: ${Object.keys(v).slice(0, 40).join(', ')}` : typeof v;
+  const err = (path, message, valid) => ({ path, message, valid: valid || '' });
+  const fail = (errors, dry) => ({ ok: false, show: null, changed: [], errors, dry_run: !!dry });
+
+  /* the catalogue: what an MCP server / CLI exposes. Few, task-shaped tools; each has an example. */
+  const OPERATIONS = [
+    { name: 'get', writes: false, description: 'Read part of the show by dotted path ("inputs", "inputs.5", "outputs.2", "setup", "meta", "pa.hangs"). An empty path lists the top-level parts.',
+      params: { path: 'string' }, example: { path: 'inputs.5' } },
+    { name: 'set', writes: true, description: 'Change values in the show. Each change is a path and the new value as a JSON value. null removes a value. Path "outputs.+" appends to a list. Gear must be exact library model names.',
+      params: { changes: '[{ path, value }]', dry_run: 'boolean', by: 'string (who made the change, for the review flag)' },
+      example: { changes: [{ path: 'inputs.5.src', value: 'Snare top' }, { path: 'meta.venue', value: 'Paradiso' }], dry_run: true } },
+    { name: 'set_inputs', writes: true, description: 'Fill or replace several input channels at once. Mic/DI names are kept as asked; pass match (library lookup) to resolve them to exact model names, otherwise they are kept in the notes.',
+      params: { rows: '[{ ch, source, mic, phantom, stand, notes }]', dry_run: 'boolean', by: 'string' },
+      example: { rows: [{ ch: 1, source: 'Kick in', mic: 'Beta 91A', phantom: false, stand: '', notes: '' }] } },
+    { name: 'validate', writes: false, description: 'Check a show file against the Lapis schema. Returns errors with the path, the problem and a valid example.', params: { file: 'showfile object' }, example: {} },
+    { name: 'review', writes: false, description: 'List values made by an agent that a human has not yet confirmed.', params: {}, example: {} }
+  ];
+
+  function get(show, path) {
+    const ps = parts(path);
+    if (!ps.length) return { parts: Object.fromEntries(Object.keys(show).filter(k => !['id', 'created', 'updated'].includes(k)).map(k => [k, shape(show[k])])) };
+    if (ps[0] === 'console') return { error: 'Desk connection details are not shown to the assistant.' };
+    const v = getAt(show, ps);
+    if (v === undefined) return { path: ps.join('.'), value: null, note: 'Nothing there.' + (ps.length > 1 ? ' Parent: ' + shape(getAt(show, ps.slice(0, -1))) : '') };
+    const s = JSON.stringify(v);
+    return s.length > 16000 ? { path: ps.join('.'), note: 'Too large to show at once: read a smaller part.', shape: shape(v) } : { path: ps.join('.'), value: v };
+  }
+
+  /* validate and normalise a list of { path, value } (value may also come as value_json text, as the terminal tool takes it) */
+  function plan(show, changes) {
+    const errors = [], out = [];
+    if (!Array.isArray(changes) || !changes.length) return { errors: [err('changes', 'No changes given.', '[{ "path": "meta.venue", "value": "Paradiso" }]')], plan: [] };
+    if (changes.length > 200) errors.push(err('changes', 'More than 200 changes in one call.', 'split into several calls'));
+    changes.slice(0, 200).forEach((c, i) => {
+      const q = `changes[${i}]`;
+      if (!isObj(c) || typeof c.path !== 'string') { errors.push(err(q, 'A change needs a path.', '{ "path": "meta.venue", "value": "Paradiso" }')); return; }
+      const ps = parts(c.path);
+      if (!ps.length) { errors.push(err(q + '.path', 'Empty path.', 'for example "inputs.5.src"')); return; }
+      if (NO_EDIT.includes(ps[0]) || ps.includes('backup') || ps[0] === 'review') { errors.push(err(q + '.path', `"${ps[0] === 'review' ? 'review' : NO_EDIT.includes(ps[0]) ? ps[0] : 'backup'}" cannot be changed by an agent.`, 'choose another part of the show')); return; }
+      if (!(ps[0] in show) && !ROOTS_NEW.includes(ps[0])) { errors.push(err(q + '.path', `There is no "${ps[0]}" in the show.`, Object.keys(show).join(' | '))); return; }
+      let v;
+      if ('value' in c) v = c.value;
+      else if ('value_json' in c) { try { v = JSON.parse(c.value_json); } catch (e) { v = c.value_json; } }
+      else { errors.push(err(q + '.value', 'A change needs a value (null removes).', '{ "path": "meta.venue", "value": "Paradiso" }')); return; }
+      out.push({ ps, v, from: getAt(show, ps) });
+    });
+    return { errors, plan: out };
+  }
+
+  function writeAt(s, ps, v) {   // returns an error string or null
+    let o = s;
+    for (let i = 0; i < ps.length - 1; i++) { const k = ps[i]; if (o[k] == null || typeof o[k] !== 'object') o[k] = /^\d+$/.test(ps[i + 1]) || ps[i + 1] === '+' ? [] : {}; o = o[k]; }
+    const last = ps[ps.length - 1];
+    if (last === '+') { if (!Array.isArray(o)) return ps.slice(0, -1).join('.') + ' is not a list.'; if (v !== null) o.push(v); }
+    else if (v === null) { if (Array.isArray(o)) o.splice(+last, 1); else delete o[last]; }
+    else o[last] = v;
+    return null;
+  }
+
+  function finish(before, s, changed, o) {   // validate, flag, report
+    const errors = [];
+    const SCH = o.schema || (typeof SDShowSchema !== 'undefined' ? SDShowSchema : null);   // pass o.schema in Node
+    if (SCH && o.validate !== false) {
+      const r = SCH.validate({ app: 'lapis', version: SCH.FORMAT, show: s });
+      const was = new Set(SCH.validate({ app: 'lapis', version: SCH.FORMAT, show: before }).errors.map(e => e.path + '|' + e.message));
+      r.errors.forEach(e => { if (!was.has(e.path + '|' + e.message)) errors.push(e); });   // only problems this call introduced
+    }
+    if (errors.length) return fail(errors, o.dry_run);
+    if (changed.length && o.by) { s.review = s.review || {}; const at = o.at || new Date().toISOString(); changed.forEach(c => { s.review[c.path] = { by: o.by, at }; }); }
+    return { ok: true, show: o.dry_run ? null : s, changed, errors: [], dry_run: !!o.dry_run };
+  }
+
+  function set(show, changes, o) {
+    o = o || {};
+    const p = plan(show, changes); if (p.errors.length) return fail(p.errors, o.dry_run);
+    const s = clone(show), changed = [];
+    for (const { ps, v, from } of p.plan) {
+      const e = ps[0] === 'inputs' && ps.length === 3 && !IN_FIELDS.includes(ps[2]) ? `"${ps[2]}" is not an input field.` : writeAt(s, ps, v);
+      if (e) return fail([err(ps.join('.'), e, ps[0] === 'inputs' ? IN_FIELDS.join(' | ') : '')], o.dry_run);
+      if (JSON.stringify(from) !== JSON.stringify(getAt(s, ps)) || ps[ps.length - 1] === '+') changed.push({ path: ps.join('.'), from: short(from), to: short(getAt(s, ps)) });
+    }
+    if (s.outputs) s.outputs.forEach(r => { if (r && !r.id && typeof o.uid === 'function') r.id = o.uid(); });
+    return finish(show, s, changed, o);
+  }
+
+  /* o.match(name) -> exact library model name or '' ; o.maxIn = channels on the console setup */
+  function setInputs(show, rows, o) {
+    o = o || {};
+    if (!Array.isArray(rows) || !rows.length) return fail([err('rows', 'No rows given.', '[{ "ch": 1, "source": "Kick in", "mic": "Beta 91A", "phantom": false, "stand": "", "notes": "" }]')], o.dry_run);
+    const list = rows.slice(0, 256).filter(r => r && r.ch > 0), s = clone(show), changed = [], miss = [], over = [], max = o.maxIn || 512;
+    s.inputs = s.inputs || {};
+    list.forEach(r => {
+      const ch = r.ch | 0; if (ch > max) over.push(ch);
+      const mic = o.match ? o.match(r.mic) : '', e = {};
+      const src = String(r.source || '').slice(0, 60); if (src) e.src = src;
+      if (mic) e.mic = mic; else if (r.mic) miss.push(`${ch}: ${r.mic}`);
+      if (r.stand === 'tall') e.stand = 'T'; else if (r.stand === 'short') e.stand = 'S';
+      const notes = [r.notes, !mic && r.mic ? 'asked: ' + r.mic : ''].filter(Boolean).join(' · '); if (notes) e.notes = notes.slice(0, 200);
+      if (r.phantom && mic) e.phantom = true;
+      const was = s.inputs[ch];
+      if (Object.keys(e).length) s.inputs[ch] = e; else delete s.inputs[ch];
+      if (JSON.stringify(was) !== JSON.stringify(s.inputs[ch])) changed.push({ path: 'inputs.' + ch, from: short(was), to: short(s.inputs[ch]) });
+    });
+    const r = finish(show, s, changed, o);
+    if (r.ok) { r.not_in_library = miss; if (over.length) r.beyond_console_channels = `Channels ${over.join(', ')} are above the ${max} inputs of this console/rack setup.`; }
+    return r;
+  }
+
+  function review(show) { return Object.entries(show.review || {}).map(([path, v]) => ({ path, by: v.by, at: v.at })); }
+  function confirmReview(show, paths) {   // the human clears the flag (app side); returns a new show
+    const s = clone(show); if (s.review) { (paths || Object.keys(s.review)).forEach(p => { delete s.review[p]; }); if (!Object.keys(s.review).length) delete s.review; } return s;
+  }
+
+  return { OPERATIONS, NO_EDIT, IN_FIELDS, parts, get, plan, set, setInputs, review, confirmReview };
+})();
+if (typeof module !== 'undefined') module.exports = SDShowOps; else (typeof window !== 'undefined' ? window : self).SDShowOps = SDShowOps;
+</script>
 <script>const LAPIS_VERSION = '2.21.0';</script>
 <script id="pa-venue">/* ===== Lapis PA venue: areas, room and room modes (2.11) =====
    - Areas: rectangles given by the centre of their front edge (x, y), width across, depth away from the stage, and the
@@ -13152,7 +13289,6 @@ const SDTerm = (() => {
 
   /* ---------- the assistant's tools ---------- */
   const NO_EDIT = ['id', 'created', 'updated', 'console'];
-  const ROOTS_NEW = ['mon', 'rf', 'net', 'lp', 'rider', 'live'];
   const IN_FIELDS = ['src', 'mic', 'phantom', 'stand', 'clip', 'multi', 'notes'];
   const short = v => { const s = v === undefined ? '(none)' : JSON.stringify(v); return s.length > 90 ? s.slice(0, 87) + '…' : s; };
   const parts = p => String(p || '').trim().replace(/^show\.?/, '').replace(/\[(\d+|\+)\]/g, '.$1').split('.').filter(Boolean);
@@ -13195,22 +13331,11 @@ const SDTerm = (() => {
         rider: rd ? { artist: rd.meta && rd.meta.artist, status: rd.meta && rd.meta.status, rows_read: (rd.rows || []).length, file: rd.file && rd.file.name } : null,
         parts: Object.keys(S.show).filter(k => !NO_EDIT.includes(k)), tabs: TAB_LABEL };
     },
-    get({ path }) {
-      const ps = parts(path); if (!ps.length) return { parts: Object.fromEntries(Object.keys(S.show).filter(k => !['id', 'created', 'updated'].includes(k)).map(k => [k, shape(S.show[k])])) };
-      if (ps[0] === 'console') return { error: 'Desk connection details are not shown to the assistant.' };
-      const v = getAt(ps); if (v === undefined) return { path: ps.join('.'), value: null, note: 'Nothing there.' + (ps.length > 1 ? ' Parent: ' + shape(getAt(ps.slice(0, -1))) : '') };
-      const s = JSON.stringify(v); return s.length > 16000 ? { path: ps.join('.'), note: 'Too large to show at once: read a smaller part.', shape: shape(v) } : { path: ps.join('.'), value: v };
-    },
+    get({ path }) { return SDShowOps.get(S.show, path); },   // shared with the CLI and MCP (show-ops.js)
     async set({ changes }, req) {
-      if (!Array.isArray(changes) || !changes.length) return { error: 'No changes given.' };
-      const plan = [];
-      for (const c of changes.slice(0, 200)) {
-        const ps = parts(c.path); if (!ps.length) return { error: 'Empty path.' };
-        if (NO_EDIT.includes(ps[0]) || ps.includes('backup')) return { error: `"${ps[0]}" cannot be changed by the assistant.` };
-        if (!(ps[0] in S.show) && !ROOTS_NEW.includes(ps[0])) return { error: `There is no "${ps[0]}" in the show. Parts: ${Object.keys(S.show).join(', ')}` };
-        let v; try { v = JSON.parse(c.value_json); } catch (e) { v = c.value_json; }
-        plan.push({ ps, v, from: getAt(ps) });
-      }
+      const pl = SDShowOps.plan(S.show, changes);   // the same path rules, limits and structured errors as the CLI and MCP
+      if (pl.errors.length) return { error: pl.errors.map(e => e.message + (e.valid ? ' (valid: ' + e.valid + ')' : '')).join(' ') };
+      const plan = pl.plan;
       if (!await confirmChanges(plan.map(x => `${x.ps.join('.')}: ${short(x.from)} → ${short(x.v)}`), req)) return { skipped: true, note: 'The user did not apply these changes.' };
       const before = JSON.stringify(S.show); snapshot(req);
       for (const { ps, v } of plan) {

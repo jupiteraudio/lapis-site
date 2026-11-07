@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jupiteraudio.github.io/lapis-site/schema/lapis-show.schema.json",
+  "title": "Lapis show file (.lapis.json), format 1",
+  "description": "Structure of a Lapis show file. This schema covers types and required fields. Rules that reference other parts of the show (output.pa must name an existing hang, hang.group an existing group, hang.aim and phase zones existing zones, ids unique within a list) cannot be written in JSON Schema: they are checked by the Lapis validator (src/js/show-schema.js, `node tools/lapis-cli.cjs validate FILE`), which also says what a valid value looks like. Unknown fields are allowed: shows grow by tab.",
+  "type": "object",
+  "required": ["app", "version", "show"],
+  "properties": {
+    "app": { "const": "lapis" },
+    "version": { "type": "integer", "const": 1, "description": "File format. A newer format than the reader knows is an error." },
+    "engine": { "type": "string", "description": "Lapis version that wrote the file, for example 2.21.0.", "examples": ["2.21.0"] },
+    "exported": { "type": "string", "description": "ISO date the file was exported." },
+    "show": { "$ref": "#/$defs/show" }
+  },
+  "$defs": {
+    "show": {
+      "type": "object",
+      "required": ["id", "meta", "setup", "inputs"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "examples": ["k3x9a2"] },
+        "created": { "type": "number", "description": "Milliseconds since 1970.", "examples": [1730000000000] },
+        "updated": { "type": "number", "description": "Milliseconds since 1970 (a number, not a date string).", "examples": [1730000000000] },
+        "meta": { "type": "object", "description": "Show details; every value is text.", "additionalProperties": { "type": "string" }, "examples": [{ "production": "Summer tour", "venue": "Paradiso", "revision": "V1" }] },
+        "setup": {
+          "type": "object",
+          "description": "Console, protocol and stage racks. Gear names must be exact library model names.",
+          "properties": { "mixer": { "type": "string" }, "protocol": { "type": "string" } },
+          "examples": [{ "mixer": "", "protocol": "", "rack1": "none", "rack2": "none", "manual": {} }]
+        },
+        "inputs": {
+          "type": "object",
+          "description": "Input channels keyed by channel number.",
+          "propertyNames": { "pattern": "^[0-9]+$" },
+          "additionalProperties": { "$ref": "#/$defs/input" },
+          "examples": [{ "1": { "src": "Kick", "phantom": false } }]
+        },
+        "outputs": { "type": "array", "items": { "$ref": "#/$defs/output" } },
+        "pa": { "$ref": "#/$defs/pa" },
+        "review": { "type": "object", "description": "Values made by an agent that a human has not confirmed yet: path -> who and when. Only the app (human) clears these.", "additionalProperties": { "type": "object", "properties": { "by": { "type": "string" }, "at": { "type": "string" } } } }
+      }
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "src": { "type": "string", "description": "Instrument or source." },
+        "mic": { "type": "string", "description": "Library mic or DI model." },
+        "phantom": { "type": "boolean", "description": "48V needed." },
+        "stand": { "type": "string", "enum": ["", "T", "S"], "description": "T tall, S short." },
+        "clip": { "type": "string" }, "multi": { "type": "string" }, "notes": { "type": "string" },
+        "name": { "type": "string", "description": "Desk name." },
+        "port": { "type": "string" }, "portB": { "type": "string" }, "portC": { "type": "string" }, "portD": { "type": "string" }
+      }
+    },
+    "output": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "examples": ["Mono", "Stereo"] },
+        "source": { "type": "string" }, "port": { "type": "string" }, "model": { "type": "string" },
+        "qty": { "type": "number" }, "use": { "type": "string" }, "placement": { "type": "string" }, "remarks": { "type": "string" },
+        "pa": { "type": "string", "description": "Id of a PA hang in pa.hangs." }
+      },
+      "examples": [{ "id": "o1", "type": "Mono", "source": "Aux 1" }]
+    },
+    "pa": {
+      "type": "object",
+      "properties": {
+        "version": { "type": "number" },
+        "zones": { "type": "array", "items": { "$ref": "#/$defs/zone" } },
+        "hangs": { "type": "array", "items": { "$ref": "#/$defs/hang" } },
+        "groups": { "type": "array", "items": { "type": "object", "required": ["id"], "properties": { "id": { "type": "string" } } } },
+        "phases": { "type": "array", "items": { "type": "object", "properties": { "id": { "type": "string" }, "zones": { "type": "object", "description": "zone id -> role; zone ids must exist." } } } }
+      }
+    },
+    "zone": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" }, "name": { "type": "string" },
+        "poly": { "type": "array", "description": "Outline: list of [x, y] points in metres.", "items": { "type": "array", "prefixItems": [{ "type": "number" }, { "type": "number" }], "minItems": 2, "maxItems": 2 } }
+      },
+      "examples": [{ "id": "zW", "name": "West", "poly": [[0, 0], [10, 0], [10, 5]] }]
+    },
+    "hang": {
+      "type": "object",
+      "required": ["id", "name", "kind", "model", "n", "x", "y", "az"],
+      "properties": {
+        "id": { "type": "string" }, "name": { "type": "string" },
+        "kind": { "enum": ["array", "sub", "point"] },
+        "model": { "type": "string", "minLength": 1, "description": "Exact library model name." },
+        "n": { "type": "integer", "minimum": 1, "description": "Number of boxes." },
+        "x": { "type": "number", "description": "metres" }, "y": { "type": "number", "description": "metres" },
+        "az": { "type": "number", "description": "degrees, 0 = +x" },
+        "trim": { "type": "number", "description": "metres" },
+        "delay": { "type": "number", "description": "ms" },
+        "polarity": { "enum": [1, -1] },
+        "group": { "type": "string", "description": "Id of a group in pa.groups." },
+        "aim": { "type": "array", "items": { "type": "string" }, "description": "Zone ids in pa.zones." }
+      },
+      "examples": [{ "id": "hW1", "name": "W1", "kind": "array", "model": "KSL8", "n": 10, "x": 0, "y": 0, "az": 180 }]
+    }
+  }
+}
