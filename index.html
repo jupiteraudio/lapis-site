@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lapis: live-sound system design, free in your browser</title>
+<meta name="description" content="Lapis: free live-sound system design and production documentation, in your browser. Download the Lapis Bridge to control your hardware locally.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><style>:root{color-scheme:dark light;--bg:#0f1216;--panel:#171b21;--ink:#e8ecf1;--mute:#98a2b0;--line:#2a313b;--acc:#4c8df0;--gold:#e8b84a}
+@media (prefers-color-scheme:light){:root{--bg:#f6f7f9;--panel:#fff;--ink:#14181d;--mute:#586271;--line:#d8dde4;--acc:#1f5fc4;--gold:#9a6b00}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main,footer{max-width:860px;margin:0 auto;padding:0 20px}header{display:flex;align-items:center;gap:16px;padding-top:22px;padding-bottom:12px}
+header img{height:34px}header nav{margin-left:auto;display:flex;gap:18px}a{color:var(--acc)}h1{font-size:2.1rem;line-height:1.15;margin:.6em 0 .3em}h2{margin:1.8em 0 .4em;font-size:1.25rem}
+.lead{font-size:1.15rem;color:var(--mute);max-width:40em}.cta{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}
+.btn{display:inline-block;padding:11px 20px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);text-decoration:none;font-weight:600}
+.btn.primary{background:var(--acc);border-color:var(--acc);color:#fff}.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.grid .card{margin:0}.mute{color:var(--mute)}code{font:13px ui-monospace,Menlo,monospace;word-break:break-all}
+table{border-collapse:collapse;width:100%}td,th{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}footer{padding-top:30px;padding-bottom:40px;color:var(--mute);font-size:14px}</style></head><body>
+<header><a href="./"><img src="assets/lapis-logo.svg" alt="Lapis"></a><nav><a href="app/">Open Lapis</a><a href="download/">Bridge</a></nav></header>
+<main>
+<h1>Everything for the sound system, in one place.</h1>
+<p class="lead">Input and output lists, rack and network planning, power, RF, diagrams, riders and PA design with real acoustics: free to use, in your browser, on any computer.</p>
+<div class="cta"><a class="btn primary" href="app/">Open Lapis</a><a class="btn" href="download/">Download the Lapis Bridge</a></div>
+<div class="grid">
+<div class="card"><b>Free, no account</b><p class="mute">Open it and start. Your shows are stored in your own browser, and you can save and open show files.</p></div>
+<div class="card"><b>Science you can check</b><p class="mute">PA design, hearing, STI and sub arrays are calculated from published methods, with the sources named.</p></div>
+<div class="card"><b>Hardware stays local</b><p class="mute">The Lapis Bridge runs on your computer and talks to your desks and devices. The website never touches your network.</p></div></div>
+<h2>How the bridge fits</h2>
+<p>Documentation and design work in the browser alone. To read or set things on a mixing desk, scan the network or send cues, download the bridge, start it, and Lapis in your browser pairs with it using a code shown in the bridge window. Every write to hardware asks you to confirm.</p>
+<p class="mute">Works best in Chrome, Edge and Firefox. Safari blocks a web page from reaching a program on your own computer: with Safari, open Lapis from the bridge itself (it serves the same app at <code>http://127.0.0.1:52400/</code>).</p></main><footer>Lapis 2.21.0 · your shows stay in your browser; nothing is sent to this site. <a href="version.json">Version and checksums</a></footer></body></html>
