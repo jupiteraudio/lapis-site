@@ -10,6 +10,7 @@ Lapis does not ship its own language model. You bring the assistant you prefer; 
 | **CLI** `tools/lapis-cli.cjs` | JSON in, JSON out | scripts, CI, assistants that can run shell commands |
 | **Renderer** `tools/lapis-render.cjs` | PDF / HTML documents | you need the printable documents |
 | **Lapis Bridge** `lapis-bridge --mcp` | the same MCP server, built into the bridge download | you have the download, not this repository; no Node.js needed |
+| **Remote** (2.26) through a tunnel | `https://<tunnel>/r/<secret>/mcp` (MCP over Streamable HTTP) and `/openapi.json` | the assistant lives on the web and can only reach servers on the internet: ChatGPT |
 | **HTTP** on the running bridge | `POST http://127.0.0.1:52400/v2/tools/<name>`, described by `/v2/openapi.json` | the assistant cannot start an MCP server but can make web requests on this computer |
 
 From the repository: Node.js 18+. Documents are drawn by the Chrome, Edge or Brave already on the computer (headless); nothing else to install.
@@ -41,6 +42,22 @@ From the repository: command `node`, arguments `["/path/to/Lapis/tools/lapis-mcp
 **Working on the same show.** Start Lapis Bridge, open Shows in Lapis and choose the same folder under **Shows folder**. A show you open from there (or put there) is linked to its file: the assistant's changes appear in the app within a few seconds, your changes go back to the file. When both changed, Lapis asks which to keep.
 
 After changing the tools or updating Lapis, restart the AI client: it reads the tool list when it starts the server.
+
+## ChatGPT and other web assistants (2.26)
+
+ChatGPT runs in OpenAI's cloud: it cannot start a program on your computer or reach 127.0.0.1, only an https address on the internet. The bridge can offer the same design-time tools on a secret address and carry it through a tunnel:
+
+1. Install cloudflared once (Mac: `brew install cloudflared`; Windows: `winget install --id Cloudflare.cloudflared`). Any other tunnel to `http://127.0.0.1:52400` works too.
+2. Start the bridge, open Lapis, choose a shows folder (Shows › Shows folder).
+3. Bridge panel › **ChatGPT and other web assistants** › switch on. The bridge starts a cloudflared quick tunnel (no account) and shows two addresses: the MCP server URL and the OpenAPI URL. (Headless: `lapis-bridge --remote` prints them.)
+4. **ChatGPT, developer mode** (Plus, Pro, Business, Enterprise, Edu; on the web): Settings › Apps & Connectors › Advanced › Developer mode on; then Create (a new app / connector), paste the MCP server URL, authentication **None**, accept the warning. In a chat, pick it under Developer mode and ask, for example: "Read the Lapis guide, then make a show for this rider" and paste the rider.
+5. **A custom GPT** instead: Create a GPT › Configure › Actions › Import from URL, paste the OpenAPI URL, authentication None. The GPT's instructions can say: "Use the Lapis tools; read lapis_guide first."
+
+What to know:
+- The address carries a 256-bit secret instead of a password: anyone who has it can use the tools while the switch is on. **New secret address** makes the old one stop working; switch off when you are done.
+- Through that address only the design-time tools answer (show files in the shows folder, documents, the PA and RF engines, the ArrayCalc writer). Every other part of the bridge refuses a request that comes through the tunnel, and the tools never reach a desk. What the assistant writes stays flagged in Lapis until you review it.
+- A quick tunnel gets a new address each time it starts: paste the new one into ChatGPT (edit the connector). For a fixed address, run a named Cloudflare tunnel (needs a Cloudflare account) to `http://127.0.0.1:52400`.
+- ChatGPT's developer mode is a beta; OpenAI warns that write tools act on your data. Here they act only on show files, each write previewed unless `apply` is true.
 
 ## HTTP
 
