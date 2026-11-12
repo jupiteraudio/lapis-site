@@ -112,6 +112,7 @@ Frame: metres. x across the room, y is depth with **the stage end at high y** an
 4. Change one thing (trim, box count, position, a fill), run again, compare. Stop when the advice list is short or the trade-off is the person's to make.
 5. It is a planning estimate with stated methods, not the maker's prediction software and not a measurement. Say so. Rigging weights are for a first look: the rigger decides.
 6. To put the design on the output list, add an output row per hang with `"pa": "<hang id>"`, the same `model` and `qty`.
+7. Into d&b ArrayCalc: `lapis_arraycalc` writes the design as an ArrayCalc 12 project (.dbpr) for the person to open, check and save in ArrayCalc. It needs an ArrayCalc project of the person's own as the template (default `ArrayCalc template.dbpr` in the shows folder) and takes each model's cabinets, frames and amplifiers from a project that already holds it (the template, or the donors in `ArrayCalc donors/`). Run it once without `apply` to see what it would write and which hangs it cannot (a model no project holds is listed, never guessed); then with `apply: true`. Pass on its `notes`: what to check or finish in ArrayCalc (quiet zones as level-avoidance planes, polarity, ArrayProcessing).
 
 ## Other parts
 

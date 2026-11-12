@@ -31,6 +31,7 @@ From the repository: command `node`, arguments `["/path/to/Lapis/tools/lapis-mcp
 | `lapis_validate` | The file format and the app's checks (capacity, patch, gear) |
 | `lapis_pa` | The PA design through the PA engine: splays, tilt, weight and balance per hang; coverage, STI, maximum SPL and dB(A) per phase; rigging; advice |
 | `lapis_sub_array` | A ground sub array (gradient pair, end-fire pair or line, four-unit cluster): positions, delays, polarity, added to the PA design |
+| `lapis_arraycalc` | The PA design as a d&b ArrayCalc project (.dbpr), built from an ArrayCalc project of the user's own: arrays, sub columns, point sources, ground SUB arrays, amplifiers with Remote IDs, delays, listening planes |
 | `lapis_rf_plan` | The wireless plan: spacing, intermodulation, licence-free ranges; fills the missing frequencies; TV channels at a Dutch location |
 | `lapis_review` | What waits for a person's review |
 | `lapis_render` | The printable documents as PDF / HTML, the ones that print from their own tab included (racks, cables, amps, power, RF, diagram) |
