@@ -4,101 +4,784 @@
   "title": "Lapis show file (.lapis.json), format 1",
   "description": "Structure of a Lapis show file. This schema covers types and required fields. Rules that reference other parts of the show (output.pa must name an existing hang, hang.group an existing group, hang.aim and phase zones existing zones, ids unique within a list) cannot be written in JSON Schema: they are checked by the Lapis validator (src/js/show-schema.js, `node tools/lapis-cli.cjs validate FILE`), which also says what a valid value looks like. Unknown fields are allowed: shows grow by tab.",
   "type": "object",
-  "required": ["app", "version", "show"],
+  "required": [
+    "app",
+    "version",
+    "show"
+  ],
   "properties": {
-    "app": { "const": "lapis" },
-    "version": { "type": "integer", "const": 1, "description": "File format. A newer format than the reader knows is an error." },
-    "engine": { "type": "string", "description": "Lapis version that wrote the file, for example 2.21.0.", "examples": ["2.21.0"] },
-    "exported": { "type": "string", "description": "ISO date the file was exported." },
-    "show": { "$ref": "#/$defs/show" }
+    "app": {
+      "const": "lapis"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "description": "File format. A newer format than the reader knows is an error."
+    },
+    "engine": {
+      "type": "string",
+      "description": "Lapis version that wrote the file, for example 2.21.0.",
+      "examples": [
+        "2.21.0"
+      ]
+    },
+    "exported": {
+      "type": "string",
+      "description": "ISO date the file was exported."
+    },
+    "show": {
+      "$ref": "#/$defs/show"
+    }
   },
   "$defs": {
     "show": {
       "type": "object",
-      "required": ["id", "meta", "setup", "inputs"],
+      "required": [
+        "id",
+        "meta",
+        "setup",
+        "inputs"
+      ],
       "properties": {
-        "id": { "type": "string", "minLength": 1, "examples": ["k3x9a2"] },
-        "created": { "type": "number", "description": "Milliseconds since 1970.", "examples": [1730000000000] },
-        "updated": { "type": "number", "description": "Milliseconds since 1970 (a number, not a date string).", "examples": [1730000000000] },
-        "meta": { "type": "object", "description": "Show details; every value is text.", "additionalProperties": { "type": "string" }, "examples": [{ "production": "Summer tour", "venue": "Paradiso", "revision": "V1" }] },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "k3x9a2"
+          ]
+        },
+        "created": {
+          "type": "number",
+          "description": "Milliseconds since 1970.",
+          "examples": [
+            1730000000000
+          ]
+        },
+        "updated": {
+          "type": "number",
+          "description": "Milliseconds since 1970 (a number, not a date string).",
+          "examples": [
+            1730000000000
+          ]
+        },
+        "meta": {
+          "type": "object",
+          "description": "Show details; every value is text.",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "examples": [
+            {
+              "production": "Summer tour",
+              "venue": "Paradiso",
+              "revision": "V1"
+            }
+          ]
+        },
         "setup": {
           "type": "object",
           "description": "Console, protocol and stage racks. Gear names must be exact library model names.",
-          "properties": { "mixer": { "type": "string" }, "protocol": { "type": "string" } },
-          "examples": [{ "mixer": "", "protocol": "", "rack1": "none", "rack2": "none", "manual": {} }]
+          "properties": {
+            "mixer": {
+              "type": "string"
+            },
+            "protocol": {
+              "type": "string"
+            }
+          },
+          "examples": [
+            {
+              "mixer": "",
+              "protocol": "",
+              "rack1": "none",
+              "rack2": "none",
+              "manual": {}
+            }
+          ]
         },
         "inputs": {
           "type": "object",
           "description": "Input channels keyed by channel number.",
-          "propertyNames": { "pattern": "^[0-9]+$" },
-          "additionalProperties": { "$ref": "#/$defs/input" },
-          "examples": [{ "1": { "src": "Kick", "phantom": false } }]
+          "propertyNames": {
+            "pattern": "^[0-9]+$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/input"
+          },
+          "examples": [
+            {
+              "1": {
+                "src": "Kick",
+                "phantom": false
+              }
+            }
+          ]
         },
-        "outputs": { "type": "array", "items": { "$ref": "#/$defs/output" } },
-        "pa": { "$ref": "#/$defs/pa" },
-        "review": { "type": "object", "description": "Values made by an agent that a human has not confirmed yet: path -> who and when. Only the app (human) clears these.", "additionalProperties": { "type": "object", "properties": { "by": { "type": "string" }, "at": { "type": "string" } } } }
+        "outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/output"
+          }
+        },
+        "pa": {
+          "$ref": "#/$defs/pa"
+        },
+        "review": {
+          "type": "object",
+          "description": "Values made by an agent that a human has not confirmed yet: path -> who and when. Only the app (human) clears these.",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "by": {
+                "type": "string"
+              },
+              "at": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "mon": {
+          "$ref": "#/$defs/mon"
+        },
+        "rf": {
+          "$ref": "#/$defs/rf"
+        },
+        "power": {
+          "$ref": "#/$defs/power"
+        },
+        "extraGear": {
+          "type": "array",
+          "description": "Other equipment for the equipment list.",
+          "items": {
+            "$ref": "#/$defs/extraGear"
+          }
+        },
+        "share": {
+          "type": "object",
+          "description": "Crew link: which documents it shows.",
+          "properties": {
+            "pages": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "auto": {
+              "type": "boolean"
+            }
+          }
+        }
       }
     },
     "input": {
       "type": "object",
       "properties": {
-        "src": { "type": "string", "description": "Instrument or source." },
-        "mic": { "type": "string", "description": "Library mic or DI model." },
-        "phantom": { "type": "boolean", "description": "48V needed." },
-        "stand": { "type": "string", "enum": ["", "T", "S"], "description": "T tall, S short." },
-        "clip": { "type": "string" }, "multi": { "type": "string" }, "notes": { "type": "string" },
-        "name": { "type": "string", "description": "Desk name." },
-        "port": { "type": "string" }, "portB": { "type": "string" }, "portC": { "type": "string" }, "portD": { "type": "string" }
+        "src": {
+          "type": "string",
+          "description": "Instrument or source."
+        },
+        "mic": {
+          "type": "string",
+          "description": "Library mic or DI model."
+        },
+        "phantom": {
+          "type": "boolean",
+          "description": "48V needed."
+        },
+        "stand": {
+          "type": "string",
+          "enum": [
+            "",
+            "T",
+            "S"
+          ],
+          "description": "T tall, S short."
+        },
+        "clip": {
+          "type": "string"
+        },
+        "multi": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Desk name."
+        },
+        "port": {
+          "type": "string"
+        },
+        "portB": {
+          "type": "string"
+        },
+        "portC": {
+          "type": "string"
+        },
+        "portD": {
+          "type": "string"
+        },
+        "pos": {
+          "type": "string",
+          "description": "Stage position (looms and groups), for example \"Drums\"."
+        }
       }
     },
     "output": {
       "type": "object",
-      "required": ["id", "type"],
+      "required": [
+        "id",
+        "type"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "type": { "type": "string", "examples": ["Mono", "Stereo"] },
-        "source": { "type": "string" }, "port": { "type": "string" }, "model": { "type": "string" },
-        "qty": { "type": "number" }, "use": { "type": "string" }, "placement": { "type": "string" }, "remarks": { "type": "string" },
-        "pa": { "type": "string", "description": "Id of a PA hang in pa.hangs." }
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "examples": [
+            "Mono",
+            "Stereo"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "qty": {
+          "type": "number"
+        },
+        "use": {
+          "type": "string"
+        },
+        "placement": {
+          "type": "string"
+        },
+        "remarks": {
+          "type": "string"
+        },
+        "pa": {
+          "type": "string",
+          "description": "Id of a PA hang in pa.hangs."
+        },
+        "amp": {
+          "type": "string",
+          "description": "Library amplifier model; empty = the speaker's default."
+        },
+        "desk": {
+          "enum": [
+            "FOH",
+            "MON"
+          ],
+          "description": "With a monitor desk: the desk this row belongs to."
+        },
+        "qtyTotal": {
+          "type": "boolean",
+          "description": "Stereo row: qty is the total, not per side."
+        }
       },
-      "examples": [{ "id": "o1", "type": "Mono", "source": "Aux 1" }]
+      "examples": [
+        {
+          "id": "o1",
+          "type": "Mono",
+          "source": "Aux 1"
+        }
+      ]
     },
     "pa": {
       "type": "object",
       "properties": {
-        "version": { "type": "number" },
-        "zones": { "type": "array", "items": { "$ref": "#/$defs/zone" } },
-        "hangs": { "type": "array", "items": { "$ref": "#/$defs/hang" } },
-        "groups": { "type": "array", "items": { "type": "object", "required": ["id"], "properties": { "id": { "type": "string" } } } },
-        "phases": { "type": "array", "items": { "type": "object", "properties": { "id": { "type": "string" }, "zones": { "type": "object", "description": "zone id -> role; zone ids must exist." } } } }
+        "version": {
+          "type": "number"
+        },
+        "zones": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/zone"
+          }
+        },
+        "hangs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hang"
+          }
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "zones": {
+                "type": "object",
+                "description": "zone id -> role; zone ids must exist."
+              }
+            }
+          }
+        }
       }
     },
     "zone": {
       "type": "object",
-      "required": ["id"],
+      "required": [
+        "id"
+      ],
       "properties": {
-        "id": { "type": "string" }, "name": { "type": "string" },
-        "poly": { "type": "array", "description": "Outline: list of [x, y] points in metres.", "items": { "type": "array", "prefixItems": [{ "type": "number" }, { "type": "number" }], "minItems": 2, "maxItems": 2 } }
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "poly": {
+          "type": "array",
+          "description": "Outline: list of [x, y] points in metres.",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "kind": {
+          "type": "string",
+          "examples": [
+            "standing",
+            "seated",
+            "quiet",
+            "corridor",
+            "wall"
+          ]
+        },
+        "ear": {
+          "type": "number",
+          "description": "Ear height in metres."
+        },
+        "z0": {
+          "type": "number",
+          "description": "Floor height at the front, metres."
+        },
+        "rake": {
+          "type": "number",
+          "description": "Rise per metre of depth."
+        }
       },
-      "examples": [{ "id": "zW", "name": "West", "poly": [[0, 0], [10, 0], [10, 5]] }]
+      "examples": [
+        {
+          "id": "zW",
+          "name": "West",
+          "poly": [
+            [
+              0,
+              0
+            ],
+            [
+              10,
+              0
+            ],
+            [
+              10,
+              5
+            ]
+          ]
+        }
+      ]
     },
     "hang": {
       "type": "object",
-      "required": ["id", "name", "kind", "model", "n", "x", "y", "az"],
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "model",
+        "n",
+        "x",
+        "y",
+        "az"
+      ],
       "properties": {
-        "id": { "type": "string" }, "name": { "type": "string" },
-        "kind": { "enum": ["array", "sub", "point"] },
-        "model": { "type": "string", "minLength": 1, "description": "Exact library model name." },
-        "n": { "type": "integer", "minimum": 1, "description": "Number of boxes." },
-        "x": { "type": "number", "description": "metres" }, "y": { "type": "number", "description": "metres" },
-        "az": { "type": "number", "description": "degrees, 0 = +x" },
-        "trim": { "type": "number", "description": "metres" },
-        "delay": { "type": "number", "description": "ms" },
-        "polarity": { "enum": [1, -1] },
-        "group": { "type": "string", "description": "Id of a group in pa.groups." },
-        "aim": { "type": "array", "items": { "type": "string" }, "description": "Zone ids in pa.zones." }
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "array",
+            "sub",
+            "point"
+          ]
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Exact library model name."
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of boxes."
+        },
+        "x": {
+          "type": "number",
+          "description": "metres"
+        },
+        "y": {
+          "type": "number",
+          "description": "metres"
+        },
+        "az": {
+          "type": "number",
+          "description": "degrees, 0 = +x"
+        },
+        "trim": {
+          "type": "number",
+          "description": "metres"
+        },
+        "delay": {
+          "type": "number",
+          "description": "ms"
+        },
+        "polarity": {
+          "enum": [
+            1,
+            -1
+          ]
+        },
+        "group": {
+          "type": "string",
+          "description": "Id of a group in pa.groups."
+        },
+        "aim": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Zone ids in pa.zones."
+        },
+        "tilt": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "degrees, positive = up (a point source, or with auto false)."
+        },
+        "auto": {
+          "type": "boolean",
+          "description": "true: Lapis works out the splay and tilt for the zones in aim."
+        },
+        "splays": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "description": "With auto false: the angle between boxes, top to bottom."
+        }
       },
-      "examples": [{ "id": "hW1", "name": "W1", "kind": "array", "model": "KSL8", "n": 10, "x": 0, "y": 0, "az": 180 }]
+      "examples": [
+        {
+          "id": "hW1",
+          "name": "W1",
+          "kind": "array",
+          "model": "KSL8",
+          "n": 10,
+          "x": 0,
+          "y": 0,
+          "az": 180
+        }
+      ]
+    },
+    "mon": {
+      "type": "object",
+      "description": "Monitor desk (optional). Stage inputs reach it shared (same racks), split (analog splitter, own racks) or digital (from the FOH desk over dsProto).",
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "mixer": {
+          "type": "string",
+          "description": "Library console model."
+        },
+        "protocol": {
+          "type": "string"
+        },
+        "link": {
+          "enum": [
+            "shared",
+            "split",
+            "digital"
+          ]
+        },
+        "dsProto": {
+          "type": "string"
+        }
+      },
+      "examples": [
+        {
+          "on": true,
+          "mixer": "SD12",
+          "link": "shared"
+        }
+      ]
+    },
+    "rf": {
+      "type": "object",
+      "properties": {
+        "channels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rfChannel"
+          }
+        },
+        "settings": {
+          "type": "object",
+          "description": "Spacing rules in kHz: cc carrier spacing, g3 / g33 / g5 intermodulation guards, step; region; defRange in MHz.",
+          "properties": {
+            "region": {
+              "type": "string"
+            },
+            "cc": {
+              "type": "number"
+            },
+            "g3": {
+              "type": "number"
+            },
+            "g33": {
+              "type": "number"
+            },
+            "g5": {
+              "type": "number"
+            },
+            "fifth": {
+              "type": "boolean"
+            },
+            "step": {
+              "type": "number"
+            },
+            "scanThr": {
+              "type": "number"
+            },
+            "defRange": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "rfChannel": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "own",
+            "other"
+          ]
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "locked": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "freq": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "MHz; null = not chosen yet."
+        },
+        "type": {
+          "type": "string",
+          "examples": [
+            "Handheld",
+            "Beltpack",
+            "IEM",
+            "Receiver",
+            "Comms",
+            "Other"
+          ]
+        },
+        "maker": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "band": {
+          "type": "string"
+        },
+        "range": {
+          "type": "string",
+          "description": "Tuning range in MHz, for example \"470-636\"."
+        },
+        "group": {
+          "type": "string"
+        },
+        "chan": {
+          "type": "string"
+        },
+        "zone": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "slot": {
+          "type": "string",
+          "description": "When it is on, for example \"20:00-21:30\"."
+        }
+      },
+      "examples": [
+        {
+          "id": "c1",
+          "role": "own",
+          "active": true,
+          "locked": false,
+          "name": "Lead vox",
+          "freq": null,
+          "type": "Handheld",
+          "maker": "Shure",
+          "model": "Axient Digital",
+          "range": "470-636"
+        }
+      ]
+    },
+    "power": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "description": "Mains voltage."
+        },
+        "threePh": {
+          "type": "boolean"
+        },
+        "limit": {
+          "type": "number",
+          "description": "Amps per phase."
+        },
+        "extra": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "where": {
+                "type": "string"
+              },
+              "what": {
+                "type": "string"
+              },
+              "w": {
+                "type": "number",
+                "description": "Watts each."
+              },
+              "qty": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "generator": {
+          "type": "boolean"
+        }
+      },
+      "examples": [
+        {
+          "v": 230,
+          "threePh": true,
+          "limit": 32,
+          "extra": [
+            {
+              "where": "FOH",
+              "what": "Laptops",
+              "w": 300,
+              "qty": 1
+            }
+          ]
+        }
+      ]
+    },
+    "extraGear": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "qty": {
+          "type": "number"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "rem": {
+          "type": "string"
+        }
+      },
+      "examples": [
+        {
+          "group": "Rigging",
+          "brand": "",
+          "model": "Chain hoist 500 kg",
+          "qty": 4,
+          "desc": "",
+          "rem": ""
+        }
+      ]
     }
   }
 }

@@ -1,3 +1,3 @@
-bb99833dd6d1aa159727789e99242f0341464fefbd9d6dd7a6d44e56455bb1b0  lapis-bridge.cjs
+5d3268e67cbff0ae5f77d9c01581408c7cce4925b981eef424a20f3bb976765a  lapis-bridge.cjs
 24197ca48d27eea0633237c712ce9a7bde2d510dd2d53c94119a149cd8de69fa  Start-Lapis-Bridge.command
 a075fa703dd0cffdffc63d76fb531558370ddd83006f0475c629030bb84fd7d9  Start-Lapis-Bridge.bat

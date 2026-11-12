@@ -1,0 +1,15 @@
+# Lapis
+
+> Live-sound system design and show documentation: riders, input and output lists, desks and stage racks, RF, PA design, equipment, system diagrams. Lapis has no language model of its own: it gives an AI assistant deterministic tools (a local MCP server and a CLI) and a checked show file format. Agents design, humans operate; the tools never touch hardware. Version 2.23.0.
+
+## For AI assistants
+
+- [Agent playbook](ai/playbook.md): order of work, every field of a show, the PA and RF tools, the documents, the rules
+- [Using Lapis from an AI client](ai/clients.md): the MCP server, the CLI, the tools, set-up
+- [Show file JSON Schema](schema/lapis-show.schema.json): the .lapis.json format (draft 2020-12)
+
+## For people
+
+- [The app](app/): runs in the browser, shows stay on your computer
+- [Lapis Bridge](download/): the local program for desks, wireless and the shows folder
+- [Licence](licence/): free for non-commercial use; commercial licence for paid work

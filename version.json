@@ -1,12 +1,12 @@
 {
   "app": "lapis",
-  "version": "2.21.0",
-  "built": "2026-11-07T14:31:21.975Z",
-  "appSha256": "3f4361a4c918b61e7cba0b7148826c3b8ceaae95f5d2122bc2d83f9cd94429ea",
+  "version": "2.23.0",
+  "built": "2026-11-11T19:54:15.177Z",
+  "appSha256": "c6d7ac5f20eaa657cf20600f77e71cb15464253811a718e299e554e09057d0b6",
   "bridge": [
     {
       "file": "lapis-bridge.cjs",
-      "sha256": "bb99833dd6d1aa159727789e99242f0341464fefbd9d6dd7a6d44e56455bb1b0"
+      "sha256": "5d3268e67cbff0ae5f77d9c01581408c7cce4925b981eef424a20f3bb976765a"
     },
     {
       "file": "Start-Lapis-Bridge.command",

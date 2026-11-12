@@ -61,6 +61,11 @@ h2{font-size:20px;font-weight:700}
 .bar-r{margin-left:auto;display:flex;align-items:center;gap:10px;white-space:nowrap}
 #saveState{font-size:12px}
 #banner{background:var(--bad);color:#fff;padding:8px 20px;font-weight:600}
+#reviewBar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--raise);border-bottom:1px solid var(--line);border-left:4px solid var(--warn);padding:6px 20px;font-size:13px}
+#reviewBar[hidden]{display:none}
+.rv-g{display:flex;align-items:center;gap:8px;margin:14px 0 2px;font-size:13px}.rv-g .rv-ga{margin-left:auto;display:flex;gap:6px}
+.sl-sec{margin-top:18px;border-top:1px solid var(--line);padding-top:10px}.sl-sec h3{margin:0 0 6px;font-size:14px}.sl-pick{display:flex;gap:8px;margin:6px 0}.sl-pick .fld{flex:1;min-width:0}
+.rv-by{font-size:12px;white-space:nowrap}.showrow.rv .n .mute{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
 
 /* generic controls */
 .btn{border:1px solid var(--line);background:var(--raise);border-radius:6px;padding:7px 12px;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap}
@@ -193,7 +198,7 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 @media print{ .termbtn,.term{display:none!important}
   :root,:root[data-theme]{color-scheme:light!important}
   html,body{background:#fff!important;color:#000!important}
-  .bar,main,#banner,dialog{display:none!important}
+  .bar,main,#banner,#reviewBar,dialog{display:none!important}
   #printRoot{display:block}
   .pr-page{break-after:page;font:11px/1.35 Arial,Helvetica,sans-serif;color:#000}
   .pr-page:last-child{break-after:auto}
@@ -1163,7 +1168,7 @@ body.sn-open #main { padding-right: 196px; } body.sn-fold #main { padding-right:
 </head>
 <body>
 <header class="bar">
-  <div class="brand" title="Lapis 2.21.0"><svg class="lm" viewBox="0 0 120 120" width="26" height="26" aria-hidden="true"><circle class="lm-ring" cx="60" cy="60" r="53" fill="none" stroke="currentColor" stroke-width="10" pathLength="100"/><polygon class="lm-tri" points="60,20 100,96 20,96" fill="#B8322A"/><circle class="lm-dot" cx="60" cy="72" r="17"/></svg><svg class="wm" viewBox="0 14 219 87" height="22" role="img" aria-label="Lapis"><path fill="currentColor" d="M19.8 85.5Q13.9 85.5 10.4 82.5Q7.0 79.5 7.0 72.9V14.5H19.8V71.6Q19.8 75.6 23.8 75.6H27.7V85.5ZM48.7 86.7Q40.3 86.7 35.2 82.9Q30.1 79.1 30.1 72.1Q30.1 65.2 34.4 61.3Q38.7 57.4 47.5 55.7L65.2 52.2Q65.2 40.8 54.9 40.8Q50.3 40.8 47.6 42.9Q44.9 45.1 44.0 49.1L31 48.5Q32.6 40.1 38.8 35.5Q45.0 30.9 54.9 30.9Q66.3 30.9 72.2 36.6Q78.0 42.4 78.0 53.1V72.5Q78.0 74.6 78.8 75.4Q79.5 76.2 81.0 76.2H82.7V85.5Q81.0 85.9 78.0 85.9Q73.7 85.9 70.7 84.1Q67.7 82.3 66.9 77.4V77.3Q64.9 81.5 60.1 84.1Q55.2 86.7 48.7 86.7ZM51.3 77.4Q57.7 77.4 61.5 73.7Q65.2 70.0 65.2 63.9V60.9L51.4 63.7Q47.1 64.6 45.3 66.3Q43.4 68.1 43.4 70.9Q43.4 77.4 51.3 77.4ZM87.7 100.5V32.1H100.0L100.2 40.1Q102.5 35.6 106.7 33.2Q110.9 30.9 116.2 30.9Q123.8 30.9 128.9 34.6Q133.9 38.4 136.4 44.8Q138.9 51.1 138.9 58.8Q138.9 66.5 136.4 72.8Q133.8 79.1 128.8 82.9Q123.7 86.7 116.1 86.7Q111.0 86.7 106.8 84.5Q102.7 82.2 100.5 78.2V100.5ZM113.1 76.3Q118.9 76.3 122.2 71.7Q125.6 67.0 125.6 58.8Q125.6 50.6 122.2 46Q118.9 41.3 113.1 41.3Q107.3 41.3 103.9 45.7Q100.5 50.1 100.5 58.8Q100.5 67.5 103.8 71.9Q107.2 76.3 113.1 76.3ZM146.3 85.5V32.1H159.1V85.5ZM146.1 25.0V13.6H159.4V25.0ZM191.4 86.7Q179.2 86.7 173.2 81.6Q167.2 76.5 166.6 68.7L179.7 68.1Q180.4 72.3 183.1 74.6Q185.7 76.9 191.5 76.9Q196 76.9 198.4 75.5Q200.7 74.0 200.7 70.9Q200.7 69.1 199.9 67.9Q199 66.7 196.6 65.8Q194.1 64.9 189.4 64.0Q181.3 62.6 176.7 60.5Q172.1 58.5 170.2 55.4Q168.4 52.3 168.4 47.7Q168.4 40.3 174.2 35.6Q179.9 30.9 191 30.9Q198.7 30.9 203.7 33.3Q208.6 35.8 211.2 39.8Q213.7 43.9 214.1 48.9L201.1 49.5Q200.9 45.7 198.5 43.2Q196.1 40.7 190.8 40.7Q186.3 40.7 184 42.5Q181.6 44.3 181.6 47.3Q181.6 50.5 183.9 52Q186.1 53.6 192.1 54.6Q200.3 55.8 205.1 57.9Q209.9 60.0 212 63.1Q214 66.3 214 70.7Q214 78.4 207.9 82.6Q201.7 86.7 191.4 86.7Z"/></svg><span>Production manager · 2.21.0</span></div>
+  <div class="brand" title="Lapis 2.23.0"><svg class="lm" viewBox="0 0 120 120" width="26" height="26" aria-hidden="true"><circle class="lm-ring" cx="60" cy="60" r="53" fill="none" stroke="currentColor" stroke-width="10" pathLength="100"/><polygon class="lm-tri" points="60,20 100,96 20,96" fill="#B8322A"/><circle class="lm-dot" cx="60" cy="72" r="17"/></svg><svg class="wm" viewBox="0 14 219 87" height="22" role="img" aria-label="Lapis"><path fill="currentColor" d="M19.8 85.5Q13.9 85.5 10.4 82.5Q7.0 79.5 7.0 72.9V14.5H19.8V71.6Q19.8 75.6 23.8 75.6H27.7V85.5ZM48.7 86.7Q40.3 86.7 35.2 82.9Q30.1 79.1 30.1 72.1Q30.1 65.2 34.4 61.3Q38.7 57.4 47.5 55.7L65.2 52.2Q65.2 40.8 54.9 40.8Q50.3 40.8 47.6 42.9Q44.9 45.1 44.0 49.1L31 48.5Q32.6 40.1 38.8 35.5Q45.0 30.9 54.9 30.9Q66.3 30.9 72.2 36.6Q78.0 42.4 78.0 53.1V72.5Q78.0 74.6 78.8 75.4Q79.5 76.2 81.0 76.2H82.7V85.5Q81.0 85.9 78.0 85.9Q73.7 85.9 70.7 84.1Q67.7 82.3 66.9 77.4V77.3Q64.9 81.5 60.1 84.1Q55.2 86.7 48.7 86.7ZM51.3 77.4Q57.7 77.4 61.5 73.7Q65.2 70.0 65.2 63.9V60.9L51.4 63.7Q47.1 64.6 45.3 66.3Q43.4 68.1 43.4 70.9Q43.4 77.4 51.3 77.4ZM87.7 100.5V32.1H100.0L100.2 40.1Q102.5 35.6 106.7 33.2Q110.9 30.9 116.2 30.9Q123.8 30.9 128.9 34.6Q133.9 38.4 136.4 44.8Q138.9 51.1 138.9 58.8Q138.9 66.5 136.4 72.8Q133.8 79.1 128.8 82.9Q123.7 86.7 116.1 86.7Q111.0 86.7 106.8 84.5Q102.7 82.2 100.5 78.2V100.5ZM113.1 76.3Q118.9 76.3 122.2 71.7Q125.6 67.0 125.6 58.8Q125.6 50.6 122.2 46Q118.9 41.3 113.1 41.3Q107.3 41.3 103.9 45.7Q100.5 50.1 100.5 58.8Q100.5 67.5 103.8 71.9Q107.2 76.3 113.1 76.3ZM146.3 85.5V32.1H159.1V85.5ZM146.1 25.0V13.6H159.4V25.0ZM191.4 86.7Q179.2 86.7 173.2 81.6Q167.2 76.5 166.6 68.7L179.7 68.1Q180.4 72.3 183.1 74.6Q185.7 76.9 191.5 76.9Q196 76.9 198.4 75.5Q200.7 74.0 200.7 70.9Q200.7 69.1 199.9 67.9Q199 66.7 196.6 65.8Q194.1 64.9 189.4 64.0Q181.3 62.6 176.7 60.5Q172.1 58.5 170.2 55.4Q168.4 52.3 168.4 47.7Q168.4 40.3 174.2 35.6Q179.9 30.9 191 30.9Q198.7 30.9 203.7 33.3Q208.6 35.8 211.2 39.8Q213.7 43.9 214.1 48.9L201.1 49.5Q200.9 45.7 198.5 43.2Q196.1 40.7 190.8 40.7Q186.3 40.7 184 42.5Q181.6 44.3 181.6 47.3Q181.6 50.5 183.9 52Q186.1 53.6 192.1 54.6Q200.3 55.8 205.1 57.9Q209.9 60.0 212 63.1Q214 66.3 214 70.7Q214 78.4 207.9 82.6Q201.7 86.7 191.4 86.7Z"/></svg><span>Production manager · 2.23.0</span></div>
   <nav class="tabs" id="tabs" aria-label="Sections">
     <div class="tgroup"><span class="tlabel">Production</span><div class="tbtns"><button data-tab="rider">Rider</button><button data-tab="show">Metadata</button><button data-tab="tour">Tour</button></div></div>
     <div class="tgroup"><span class="tlabel">Infrastructure</span><div class="tbtns"><button data-tab="system">Desks &amp; racks</button><button data-tab="pa">PA design</button><button data-tab="network">Network</button><button data-tab="power">Power</button><button data-tab="rf">RF</button></div></div>
@@ -1179,6 +1184,7 @@ body.sn-open #main { padding-right: 196px; } body.sn-fold #main { padding-right:
   </div>
 </header>
 <div id="banner" role="alert" hidden></div>
+<div id="reviewBar" role="status" hidden></div>
 <main id="main"></main>
 <div id="printRoot"></div>
 <dialog id="dlg" aria-label="Shows"></dialog>
@@ -1748,6 +1754,7 @@ const SD = (() => {
 })();
 if (typeof window !== 'undefined') window.SD = SD;
 
+if (typeof module !== 'undefined') module.exports = SD;
 </script>
 <script>
 /* ===== Lapis app core: helpers, state, library migration, load / save, files, the tab shell.
@@ -1897,9 +1904,10 @@ function saveNow() {
   $('#showName').textContent = showTitle(s);
   $('#saveState').dataset.ok = ok ? '1' : '0';
   $('#saveState').textContent = ok ? 'Saved ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Not saved';
+  if (window.SDShowLink) SDShowLink.saved();   // a show linked to a file in the shows folder goes back to that file
 }
 const saveSettings = () => store.set('settings', S.settings);
-const saveLib = () => { assignIds(S.lib); return store.set('library', S.lib); };
+const saveLib = () => { assignIds(S.lib); const ok = store.set('library', S.lib); if (window.SDShowLink) SDShowLink.libSaved(); return ok; };
 window.addEventListener('beforeunload', () => { if (saveT) saveNow(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden && saveT) saveNow(); });
 
@@ -1925,7 +1933,7 @@ function resizeImage(file, maxW) {
 function exportShow() { download(safeName(S.show.meta.production) + '.lapis.json', JSON.stringify({ app: 'lapis', version: 1, engine: typeof LAPIS_VERSION === 'string' ? LAPIS_VERSION : undefined, exported: new Date().toISOString(), show: S.show })); }
 async function importShowFile(f) {
   try {
-    const o = JSON.parse(await readText(f)); let sh;
+    let o = JSON.parse(await readText(f)), sh; if (window.SDShowSchema) o = SDShowSchema.migrate(o).file;   // an older file format is brought up to this one
     if (o && o.app === 'lapis' && o.show && window.SDShowSchema) { const v = SDShowSchema.validate(o); if (v.errors.length && !confirm(`This show file has ${v.errors.length} problem${v.errors.length > 1 ? 's' : ''}, for example:\n\n${v.errors.slice(0, 3).map(e => e.path + ': ' + e.message).join('\n')}\n\nOpen it anyway?`)) return; }
     if (o && o.app === 'lapis' && o.show) sh = normalizeShow(Object.assign({}, o.show, { id: uid(), updated: Date.now() }));
     else throw new Error('bad');
@@ -1948,6 +1956,7 @@ function go(tab) {
   { const cur = $('#tabs button[aria-current="page"]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest', inline: 'nearest' }); setTimeout(navEdges, 0); }
   { const m = $('#main'); if (m) m.classList.remove('net-compact'); }   // tab-specific layout classes
   TABS[tab](); window.scrollTo(0, 0);
+  if (window.SDReview) SDReview.refresh();   // values an assistant set and nobody reviewed yet
 }
 function emptyState(title, text, tab, btn) { return `<div class="empty"><h2>${esc(title)}</h2><p>${esc(text)}</p><button class="btn primary" data-go="${tab}">${esc(btn)}</button></div>`; }
 function switchShow(id) {
@@ -1973,7 +1982,8 @@ function openShows() {
     return `<div class="showrow${x.id === S.show.id ? ' cur' : ''}"><div class="n"><b>${esc(x.name || 'Untitled show')}</b><span class="mute">${new Date(x.updated).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}${x.id === S.show.id ? ' · open now' : ''}</span></div>
     ${x.id === S.show.id ? '' : `<button class="btn sm" data-act="show-open" data-id="${x.id}">Open</button>`}
     <button class="btn sm" data-act="show-dup" data-id="${x.id}">Duplicate</button>
-    <button class="btn sm danger" data-act="show-del" data-id="${x.id}">Delete</button><span class="mute" style="min-width:64px;text-align:right">${sz >= 0.1 ? sz.toFixed(1) + ' MB' : Math.max(1, Math.round(sz * 1024)) + ' KB'}</span></div>`; }).join('')}</div>
+    <button class="btn sm danger" data-act="show-del" data-id="${x.id}">Delete</button><span class="mute" style="min-width:64px;text-align:right">${sz >= 0.1 ? sz.toFixed(1) + ' MB' : Math.max(1, Math.round(sz * 1024)) + ' KB'}</span></div>`; }).join('')}
+  ${window.SDShowLink ? SDShowLink.section() : ''}</div>
   <div class="dlg-f"><button class="btn primary" data-act="show-new">New show</button><button class="btn" data-act="tpl-open">New from template</button><button class="btn" data-act="show-import">Open show file</button></div>`;
   d.showModal();
 }
@@ -5334,7 +5344,14 @@ init();
 const RF = (() => {
   const KHZ_T = 3000;                 // a bare number >= 3000 is read as kHz
   const NL = [[470,556],[558,564],[566,572],[574,580],[582,588],[590,596],[598,604],[614,694]];
-  const REGIONS = { NL: { name: 'Netherlands · licence-free (RDI)', ranges: NL }, NONE: { name: 'No region check', ranges: null } };
+  const REGIONS = { NL: { name: 'Netherlands · licence-free (RDI)', ranges: NL }, CUSTOM: { name: 'Own ranges (another country, or a licence)', ranges: null }, NONE: { name: 'No region check', ranges: null } };
+  /* 2.23: the ranges a show checks against. "Own ranges" reads settings.ranges ("470-694, 823-832" in MHz): for a country Lapis has no
+     table for, typed from the regulator's own list, or the block a licence gives you. Nothing typed = no check. */
+  function parseRanges(t) { return String(t || '').split(/[,;\n]+/).map(x => parseRange(x)).filter(Boolean).sort((a, b) => a[0] - b[0]); }
+  function regionOf(S) {
+    if (S && S.region === 'CUSTOM') { const r = parseRanges(S.ranges); return r.length ? { name: 'Own ranges: ' + r.map(([a, b]) => a + '–' + b).join(', ') + ' MHz', ranges: r } : { name: 'Own ranges (none typed yet: no check)', ranges: null }; }
+    return REGIONS[S && S.region] || REGIONS.NL;
+  }
   const DEFAULTS = { region: 'NL', cc: 350, g3: 100, g33: 50, fifth: false, g5: 50, step: 25, scanThr: -80, defRange: '470-694' };
 
   /* ---------- numbers ---------- */
@@ -5596,7 +5613,7 @@ const RF = (() => {
   function parseSlot(t) { return String(t || '').split(/[,;]/).map(x => /(\d{1,2})[:.h]?(\d{2})?\s*[-–]\s*(\d{1,2})[:.h]?(\d{2})?/.exec(x)).filter(Boolean).map(m => { const a = +m[1] * 60 + (+m[2] || 0); let b = +m[3] * 60 + (+m[4] || 0); if (b <= a) b += 1440; return [a, b]; }); }
   function slotOverlap(x, y) { const A = parseSlot(x), B = parseSlot(y); if (!A.length || !B.length) return true; return A.some(([a, b]) => B.some(([c, d]) => a < d && c < b || a + 1440 < d && c < b + 1440 || c + 1440 < b && a < d + 1440)); }
   function analyse(list, S, scan) {
-    const res = new Map(), region = REGIONS[S.region] || REGIONS.NL, allProducts = [];
+    const res = new Map(), region = regionOf(S), allProducts = [];
     const add = (c, level, msg) => { const r = res.get(c.id); r.msgs.push({ level, msg }); if (level === 'err' || (level === 'warn' && r.level !== 'err')) r.level = level; };
     list.forEach(c => res.set(c.id, { level: c.freq == null ? 'none' : 'ok', msgs: [] }));
     const zones = new Map();
@@ -5635,7 +5652,7 @@ const RF = (() => {
           add(c, worst[1] === 3 ? 'err' : 'warn', orderName(worst[1]) + ' IMD ' + Math.round(Math.abs(worst[0] - f) * 1000) + ' kHz away (' + how + ')' + (hits > 1 ? ' +' + (hits - 1) + ' more' : ''));
         }
         // region, tuning range, scan
-        if (c.role === 'own' && region.ranges && !inRanges(f, region.ranges)) add(c, 'warn', 'Outside ' + region.name + ' — check licence');
+        if (c.role === 'own' && region.ranges && !inRanges(f, region.ranges)) add(c, 'warn', 'Outside ' + (S.region === 'CUSTOM' ? 'your own ranges' : region.name) + ' — check licence');
         const rg = parseRange(c.range); if (rg && (f < rg[0] || f > rg[1])) add(c, 'err', 'Outside tune range ' + c.range);
         const lvl = scanLevel(scan, f); if (lvl != null && lvl > S.scanThr && c.role === 'own') add(c, 'warn', 'Scan shows ' + lvl + ' dBm here');
         if (!c.active) { const r = res.get(c.id); r.msgs.unshift({ level: 'info', msg: 'Spare / off — not counted as a transmitter' }); }
@@ -5648,7 +5665,7 @@ const RF = (() => {
   /* Find the lowest compatible frequency for channel c, given everything else in its zone. */
   function suggest(c, list, S, scan) {
     const rg = parseRange(c.range) || parseRange(S.defRange) || [470, 694];
-    const region = REGIONS[S.region] || REGIONS.NL, z = (c.zone || '').trim().toLowerCase();
+    const region = regionOf(S), z = (c.zone || '').trim().toLowerCase();
     const tx = list.filter(x => x !== c && x.active && x.freq != null && (x.zone || '').trim().toLowerCase() === z && slotOverlap(x.slot, c.slot)).sort((a, b) => a.freq - b.freq);
     const tf = tx.map(x => x.freq), { pf, P } = products(tx, S, 120), cc = S.cc / 1000, step = Math.max(5, S.step) / 1000;
     const near = (arr, f, g, skip) => { for (let i = lowerBound(arr, f - g); i < arr.length && arr[i] <= f + g; i++) if (!skip || !skip(i)) return true; return false; };
@@ -5680,9 +5697,10 @@ const RF = (() => {
     return null;
   }
 
-  return { parseSlot, slotOverlap, NL, REGIONS, DEFAULTS, parseFreq, fmt, khz, parseRange, inRanges, parseCSV, sniffDelim, sniffMapping, FIELDS, FIELD_LABEL, blank, rowsToChannels, smartLines, freqsInText, detect, readBare, readWwbReport, readWsmCsv, readWsmHtml, readScan, writeWwbTxt, writeWsmCsv, writeScanCsv, writeFullCsv, writeCSV, analyse, suggest, scanLevel };
+  return { parseSlot, slotOverlap, NL, REGIONS, regionOf, parseRanges, DEFAULTS, parseFreq, fmt, khz, parseRange, inRanges, parseCSV, sniffDelim, sniffMapping, FIELDS, FIELD_LABEL, blank, rowsToChannels, smartLines, freqsInText, detect, readBare, readWwbReport, readWsmCsv, readWsmHtml, readScan, writeWwbTxt, writeWsmCsv, writeScanCsv, writeFullCsv, writeCSV, analyse, suggest, scanLevel };
 })();
 if (typeof window !== 'undefined') window.RF = RF;
+if (typeof module !== 'undefined') module.exports = RF;
 
 </script>
 <script id="pdf-text">/* ===== Lapis PDF text reader (2.11): positioned text from a PDF without pdf.js =====
@@ -5999,6 +6017,7 @@ function render() {
   <details class="rules" id="rules"><summary>Coordination rules</summary>
     <div class="rgrid">
       <div><label class="lab" for="r-region">Region</label><select id="r-region" class="fld" data-set="region">${Object.entries(RF.REGIONS).map(([k, v]) => `<option value="${k}">${esc(v.name)}</option>`).join('')}</select></div>
+      <div id="r-rangesBox" hidden style="grid-column:1/-1"><label class="lab" for="r-ranges">Own ranges (MHz)</label><input id="r-ranges" class="fld" data-set="ranges" placeholder="470-694, 823-832" autocomplete="off"><span class="mute" style="font-size:12px">The ranges you may use here, from the national regulator's table or your licence. Lapis has a table for the Netherlands only.</span></div>
       <div><label class="lab" for="r-cc">Carrier spacing (kHz)</label><input id="r-cc" type="number" min="0" class="fld" data-set="cc"></div>
       <div><label class="lab" for="r-g3">3rd order 2-Tx guard (kHz)</label><input id="r-g3" type="number" min="0" class="fld" data-set="g3"></div>
       <div><label class="lab" for="r-g33">3rd order 3-Tx guard (kHz)</label><input id="r-g33" type="number" min="0" class="fld" data-set="g33"></div>
@@ -6011,9 +6030,10 @@ function render() {
   </details></div>`;
   $$('[data-meta]').forEach(el => { el.value = m[el.dataset.meta] || ''; el.addEventListener('input', () => { m[el.dataset.meta] = el.value; queueSave(); }); });
   $$('[data-set]').forEach(el => {
-    const k = el.dataset.set; if (el.type === 'checkbox') el.checked = !!p.settings[k]; else el.value = p.settings[k];
-    el.addEventListener('change', () => { p.settings[k] = el.type === 'checkbox' ? el.checked : el.type === 'number' ? (el.value === '' ? RF.DEFAULTS[k] : Number(el.value)) : el.value; queueSave(); refresh(); });
+    const k = el.dataset.set; if (el.type === 'checkbox') el.checked = !!p.settings[k]; else el.value = p.settings[k] == null ? '' : p.settings[k];
+    el.addEventListener('change', () => { p.settings[k] = el.type === 'checkbox' ? el.checked : el.type === 'number' ? (el.value === '' ? RF.DEFAULTS[k] : Number(el.value)) : el.value; if (k === 'region') ownRanges(); queueSave(); refresh(); if (k === 'region' || k === 'ranges') drawSpectrum(); });
   });
+  const ownRanges = () => { const b = $('#r-rangesBox'); if (b) b.hidden = p.settings.region !== 'CUSTOM'; }; ownRanges();
   ['#v-lo', '#v-hi'].forEach(s => $(s).addEventListener('change', () => { const a = RF.parseFreq($('#v-lo').value), b = RF.parseFreq($('#v-hi').value); if (a && b && b > a) { R.view = [a, b]; drawSpectrum(); } }));
   if (window.SDZone) { SDZone.mount(main.querySelector('.rfx')); }
   bindSpectrum(); renderTable(); refresh();
@@ -6118,7 +6138,7 @@ function drawSpectrum(target) {
   const W = SW - PL - PR, x = f => PL + (f - lo) / (hi - lo) * W, yTop = PT, yBot = SH - PB - IMH - 4, plotH = yBot - yTop;
   const yL = l => yBot - (Math.max(-120, Math.min(-10, l)) + 120) / 110 * plotH;
   const cs = getComputedStyle(document.documentElement), col = k => cs.getPropertyValue(k).trim();
-  const P = R.p, set = P.settings, region = RF.REGIONS[set.region] || RF.REGIONS.NL, out = [];
+  const P = R.p, set = P.settings, region = RF.regionOf(set), out = [];
   out.push(`<rect x="${PL}" y="${yTop}" width="${W}" height="${SH - PB - yTop}" fill="${col('--plot')}"/>`);
   if (region && region.ranges) region.ranges.forEach(([a, b]) => { if (b < lo || a > hi) return; const x1 = x(Math.max(a, lo)), x2 = x(Math.min(b, hi)); out.push(`<rect x="${x1}" y="${yTop}" width="${Math.max(0, x2 - x1)}" height="${yBot - yTop}" fill="${col('--allowed')}"/>`); });
   // grid
@@ -6302,7 +6322,7 @@ function renderPrint() {
   $('#printRoot').innerHTML = `<div class="rfp"><div class="pr-head"><div><h1>RF plan${m.production ? ' · ' + esc(m.production) : ''}</h1><div>${esc([m.venue, m.date, m.coordinator ? 'Coordinator: ' + m.coordinator : ''].filter(Boolean).join(' · '))}</div></div><div style="text-align:right">${own.length} own · ${oth.length} other users<br>Printed ${new Date().toLocaleDateString([], { dateStyle: 'medium' })}</div></div>
   <svg id="prSpec" xmlns="http://www.w3.org/2000/svg"></svg>
   ${own.length ? '<div class="pr-sec">Own channels</div>' + table(own) : ''}${oth.length ? '<div class="pr-sec">Other users at this event</div>' + table(oth) : ''}
-  <div class="pr-foot">Rules: carrier spacing ${set.cc} kHz · 3rd-order guard ${set.g3} kHz (2-Tx) / ${set.g33} kHz (3-Tx)${set.fifth ? ' · 5th-order ' + set.g5 + ' kHz' : ''} · region: ${esc((RF.REGIONS[set.region] || RF.REGIONS.NL).name)}. Generated by Lapis; verify in WWB/WSM and on site.</div></div>`;
+  <div class="pr-foot">Rules: carrier spacing ${set.cc} kHz · 3rd-order guard ${set.g3} kHz (2-Tx) / ${set.g33} kHz (3-Tx)${set.fifth ? ' · 5th-order ' + set.g5 + ' kHz' : ''} · region: ${esc(RF.regionOf(set).name)}. Generated by Lapis; verify in WWB/WSM and on site.</div></div>`;
   const th = document.documentElement.dataset.theme, v = R.view; R.view = null; document.documentElement.dataset.theme = 'light'; drawSpectrum($('#prSpec')); document.documentElement.dataset.theme = th; R.view = v; R.cur = null; drawSpectrum();
 }
 function doPrint() { if (saveT) saveNow(); refreshNow(); renderPrint(); window.print(); }
@@ -6445,7 +6465,8 @@ const SDZone = (() => {
   }
   return { SITES, channelsAt, rangesAt, zonesByChannel, lookup, mount, applyRegion, radius };
 })();
-window.SDZone = SDZone;
+if (typeof window !== 'undefined') window.SDZone = SDZone;
+if (typeof module !== 'undefined') module.exports = SDZone;
 </script>
 
 <script id="engine-module">
@@ -7519,6 +7540,7 @@ Rules:
     Object.entries(R.sections).forEach(([k, rows]) => { if (!rows.length) return; const cols = [...new Set(rows.flatMap(r => Object.keys(r)))]; L.push(''); L.push(q(k)); L.push(cols.map(q).join(',')); rows.forEach(r => L.push(cols.map(c => q(r[c])).join(','))); });
     download(safeFile() + '_desk-report.csv', L.join('\n') + '\n', 'text/csv'); };
   async function call(path, payload) {
+    if (payload && window.SDReview && !SDReview.gate(path, payload)) throw new Error('Not sent: the assistant-made values wait for your review.');
     const r = await fetch(base() + path, { method: payload ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json', 'X-Lapis-Key': bset().key }, body: payload ? JSON.stringify(payload) : undefined });
     const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || ('Bridge error ' + r.status)); return j;
   }
@@ -10853,9 +10875,44 @@ const SDShowSchema = (() => {
           if (o.pa && s.pa && !hangIds.has(o.pa)) err(q + '.pa', `PA hang "${o.pa}" does not exist.`, [...hangIds].join(' | ') || 'add the hang first');
         }); }
     }
+    /* the smaller parts: types only, so a file another program wrote opens cleanly on its tab */
+    const opt = (o, q, k, test, msg, valid) => { if (o[k] !== undefined && o[k] !== null && !test(o[k])) err(q + '.' + k, msg, valid); };
+    const isStr = v => typeof v === 'string', isBool = v => typeof v === 'boolean', numOrBlank = v => isNum(v) || v === '';
+    if (s.mon !== undefined) { if (!isObj(s.mon)) err('show.mon', '"mon" (the monitor desk) must be an object.', '{ "on": true, "mixer": "", "link": "shared" }');
+      else { opt(s.mon, 'show.mon', 'on', isBool, '"on" is true or false.', 'true'); ['mixer', 'protocol', 'dsProto'].forEach(k => opt(s.mon, 'show.mon', k, isStr, `"${k}" is text.`, '"..."'));
+        opt(s.mon, 'show.mon', 'link', v => ['shared', 'split', 'digital'].includes(v), 'How the stage inputs reach the monitor desk.', '"shared" | "split" | "digital"'); } }
+    if (s.rf !== undefined) { if (!isObj(s.rf)) err('show.rf', '"rf" must be an object.', '{ "channels": [], "settings": {} }');
+      else { if (s.rf.channels !== undefined && !Array.isArray(s.rf.channels)) err('show.rf.channels', '"channels" must be a list.', '[]');
+        if (s.rf.settings !== undefined && !isObj(s.rf.settings)) err('show.rf.settings', '"settings" must be an object.', '{ "region": "NL", "cc": 350 }');
+        if (Array.isArray(s.rf.channels)) { ids(s.rf.channels, 'show.rf.channels'); s.rf.channels.forEach((c, i) => { const q = `show.rf.channels[${i}]`;
+          if (!isObj(c)) { err(q, 'A wireless channel is an object.', '{ "id": "c1", "name": "Lead vox", "freq": null, "type": "Handheld", "active": true }'); return; }
+          if (typeof c.id !== 'string' || !c.id) err(q + '.id', 'A wireless channel needs a string id.', '"c1"');
+          opt(c, q, 'freq', isNum, 'A frequency is a number in MHz, or null for "not chosen yet".', '518.375');
+          ['active', 'locked'].forEach(k => opt(c, q, k, isBool, `"${k}" is true or false.`, 'true'));
+          opt(c, q, 'role', v => v === 'own' || v === 'other', 'Whose channel it is.', '"own" | "other"');
+          ['name', 'type', 'maker', 'model', 'band', 'range', 'group', 'chan', 'zone', 'notes', 'slot'].forEach(k => opt(c, q, k, isStr, `"${k}" is text.`, '"..."')); }); } } }
+    if (s.power !== undefined) { if (!isObj(s.power)) err('show.power', '"power" must be an object.', '{ "v": 230, "threePh": true, "limit": 32, "extra": [] }');
+      else { ['v', 'limit', 'upsMin', 'genLoad'].forEach(k => opt(s.power, 'show.power', k, numOrBlank, `"${k}" is a number.`, k === 'v' ? '230' : '32')); ['threePh', 'toEq', 'generator'].forEach(k => opt(s.power, 'show.power', k, isBool, `"${k}" is true or false.`, 'true'));
+        if (s.power.extra !== undefined && !Array.isArray(s.power.extra)) err('show.power.extra', '"extra" must be a list.', '[{ "where": "FOH", "what": "Laptops", "w": 300, "qty": 1 }]');
+        else (s.power.extra || []).forEach((x, i) => { const q = `show.power.extra[${i}]`; if (!isObj(x)) { err(q, 'A load is an object.', '{ "where": "FOH", "what": "Laptops", "w": 300, "qty": 1 }'); return; } ['w', 'qty'].forEach(k => opt(x, q, k, numOrBlank, `"${k}" is a number (${k === 'w' ? 'watts' : 'how many'}).`, k === 'w' ? '300' : '1')); ['where', 'what'].forEach(k => opt(x, q, k, isStr, `"${k}" is text.`, '"..."')); }); } }
+    if (s.extraGear !== undefined) { if (!Array.isArray(s.extraGear)) err('show.extraGear', '"extraGear" (other equipment) must be a list.', '[{ "group": "Rigging", "model": "Chain hoist 500 kg", "qty": 4 }]');
+      else s.extraGear.forEach((x, i) => { const q = `show.extraGear[${i}]`; if (!isObj(x)) { err(q, 'A row is an object.', '{ "group": "Rigging", "brand": "", "model": "Chain hoist 500 kg", "qty": 4, "desc": "", "rem": "" }'); return; }
+        opt(x, q, 'qty', numOrBlank, 'Quantity is a number.', '4'); ['group', 'brand', 'model', 'desc', 'rem'].forEach(k => opt(x, q, k, isStr, `"${k}" is text.`, '"..."')); }); }
+    if (s.share !== undefined) { if (!isObj(s.share)) err('show.share', '"share" must be an object.', '{ "pages": ["in", "patch"], "auto": true }');
+      else if (s.share.pages !== undefined && !(Array.isArray(s.share.pages) && s.share.pages.every(isStr))) err('show.share.pages', '"pages" is a list of document names.', '["in", "patch", "mix"]'); }
     return { ok: !errors.length, errors, warnings };
   }
-  return { FORMAT, validate };
+  /* Older file formats are brought up to this one here, one step per format number: MIGRATIONS[n] takes a file of format n and returns
+     format n + 1. Format 1 is the first, so the list is empty; the place exists so that a format 2 never strands a format-1 show.
+     migrate(file) returns { file, from, to, steps } (the same object when nothing was needed); a newer file than this Lapis reads is left alone. */
+  const MIGRATIONS = {};
+  function migrate(file) {
+    if (!isObj(file) || !Number.isInteger(file.version) || file.version >= FORMAT) return { file, from: file && file.version, to: file && file.version, steps: [] };
+    let f = JSON.parse(JSON.stringify(file)); const from = f.version, steps = [];
+    while (f.version < FORMAT) { const v = f.version, m = MIGRATIONS[v]; if (!m) break; f = m.run(f); f.version = v + 1; steps.push(m.what); }
+    return { file: f, from, to: f.version, steps };
+  }
+  return { FORMAT, validate, migrate, MIGRATIONS };
 })();
 if (typeof module !== 'undefined') module.exports = SDShowSchema; else (typeof window !== 'undefined' ? window : self).SDShowSchema = SDShowSchema;
 </script>
@@ -10868,11 +10925,16 @@ if (typeof module !== 'undefined') module.exports = SDShowSchema; else (typeof w
    - Errors are structured { path, message, valid } (same shape as SDShowSchema) so an AI client can repair its call.
    - The result is validated with SDShowSchema (when loaded); a change that breaks the show is refused and nothing is kept.
    - Agent-made values are flagged in show.review (path -> { by, at }) until a human clears them; this is how "agent-made,
-     not reviewed" reaches Push to desk. Operations never touch hardware. */
+     not reviewed" reaches Push to desk. Operations never touch hardware.
+   - With o.lib (the gear library) gear names are checked: the same model written another way (case, brand in front, an alias) is
+     stored as the exact library name, anything else is refused with the nearest library names. With o.SD (core-state-library.js)
+     new output rows get the next free bus and socket, and checks() / overview() run the capacity and patch rules of the app. */
 const SDShowOps = (() => {
   const NO_EDIT = ['id', 'created', 'updated', 'console'];
-  const ROOTS_NEW = ['mon', 'rf', 'net', 'lp', 'rider', 'live'];
-  const IN_FIELDS = ['src', 'mic', 'phantom', 'stand', 'clip', 'multi', 'notes', 'port', 'portB', 'portC', 'portD', 'name'];
+  const ROOTS_NEW = ['mon', 'rf', 'net', 'lp', 'rider', 'live', 'pa', 'power', 'extraGear', 'share', 'buses', 'scenes', 'network', 'stage', 'quote', 'fest', 'mixes', 'control', 'wireless', 'racks', 'cables', 'pm', 'rfGear', 'tour', 'qlab', 'logs', 'ties', 'waves'];
+  const IN_FIELDS = ['src', 'mic', 'phantom', 'stand', 'clip', 'multi', 'notes', 'port', 'portB', 'portC', 'portD', 'name', 'pos'];
+  const LIB_CATS = ['mics', 'mounts', 'mixers', 'racks', 'speakers', 'amps', 'processors', 'wireless', 'interfaces'];
+  const newId = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-3);
   const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
   const clone = o => JSON.parse(JSON.stringify(o));
   const short = v => { const s = v === undefined ? '(none)' : JSON.stringify(v); return s.length > 90 ? s.slice(0, 87) + '…' : s; };
@@ -10883,15 +10945,121 @@ const SDShowOps = (() => {
   const err = (path, message, valid) => ({ path, message, valid: valid || '' });
   const fail = (errors, dry) => ({ ok: false, show: null, changed: [], errors, dry_run: !!dry });
 
+  /* ---------- gear: exact library names, never a guess ---------- */
+  const sq = s => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  function gearFind(lib, cat, name) {   // the exact model, or the same model written another way (case, brand in front, an alias)
+    const list = (lib && lib[cat]) || [], t = sq(name); if (!t) return null;
+    return list.find(x => x.model === name) || list.find(x => sq(x.model) === t || sq((x.brand || '') + x.model) === t || (x.aliases || []).some(a => sq(a) === t)) || null;
+  }
+  function gearNear(lib, cat, name) {   // up to 6 library names that look like it, for the "valid" part of an error
+    const t = sq(name), words = String(name || '').toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length > 1);
+    const score = x => { const h = sq((x.brand || '') + ' ' + x.model + ' ' + (x.aliases || []).join(' ')), m = sq(x.model); return (t && (h.includes(t) || (m.length > 2 && t.includes(m))) ? 10 : 0) + words.filter(w => h.includes(w)).length; };
+    return ((lib && lib[cat]) || []).map(x => [score(x), x.model]).filter(a => a[0] > 0).sort((a, b) => b[0] - a[0]).slice(0, 6).map(a => a[1]);
+  }
+  function gearSlots(show, generic) {   // every place a library model name sits in a show
+    const out = [], slot = (path, cat, o, k, none) => { if (o && typeof o[k] === 'string' && o[k] && !(none && o[k] === 'none')) out.push({ path, cat, o, k }); };
+    const desk = (o, p) => { if (!isObj(o)) return; slot(p + '.mixer', 'mixers', o, 'mixer'); Object.keys(o).filter(k => /^rack\d+$/.test(k)).forEach(k => slot(p + '.' + k, 'racks', o, k, true)); };
+    desk(show.setup, 'setup'); desk(show.mon, 'mon');
+    if (isObj(show.inputs)) Object.entries(show.inputs).forEach(([ch, e]) => { if (isObj(e)) { slot('inputs.' + ch + '.mic', 'mics', e, 'mic'); slot('inputs.' + ch + '.clip', 'mounts', e, 'clip'); } });
+    if (Array.isArray(show.outputs)) show.outputs.forEach((r, i) => { if (isObj(r)) { slot('outputs[' + i + '].model', 'speakers', r, 'model'); slot('outputs[' + i + '].amp', 'amps', r, 'amp'); } });
+    if (generic && isObj(show.pa) && Array.isArray(show.pa.hangs)) show.pa.hangs.forEach((h, i) => { if (isObj(h) && !(h.model in generic)) slot('pa.hangs[' + i + '].model', 'speakers', h, 'model'); });   // generic = the PA engine's own planning models
+    return out;
+  }
+  const WHAT = { mixers: 'console', racks: 'stage rack', mics: 'microphone or DI', mounts: 'clip or mount', speakers: 'speaker', amps: 'amplifier' };
+  /* rules beyond the file format: gear in the library, the protocol one the console has, list values the app knows.
+     fix: true also writes the exact library name where the same model was written another way. */
+  function ruleErrors(s, lib, fix, generic) {
+    const errors = [];
+    if (lib) {
+      gearSlots(s, generic).forEach(g => { const v = g.o[g.k], hit = gearFind(lib, g.cat, v);
+        if (hit) { if (fix && hit.model !== v) g.o[g.k] = hit.model; return; }
+        const near = gearNear(lib, g.cat, v);
+        errors.push(err('show.' + g.path, '"' + v + '" is not a ' + WHAT[g.cat] + ' in the Lapis library.', near.length ? near.map(n => '"' + n + '"').join(' | ') : 'search with find_gear; if the library has no such model, leave this empty and write the name in the notes or remarks')); });
+      const st = s.setup, mx = isObj(st) && st.mixer ? gearFind(lib, 'mixers', st.mixer) : null;
+      if (mx && st.protocol && typeof st.protocol === 'string') { const ps = mx.protocols || [], p = ps.find(x => x.toLowerCase() === st.protocol.toLowerCase());
+        if (p) { if (fix) st.protocol = p; } else errors.push(err('show.setup.protocol', '"' + st.protocol + '" is not a protocol of the ' + mx.model + '.', ps.map(x => '"' + x + '"').join(' | ') || '""')); }
+    }
+    if (isObj(s.inputs)) Object.entries(s.inputs).forEach(([ch, e]) => { if (!isObj(e)) return; const q = 'show.inputs.' + ch;
+      if (e.stand !== undefined && !['', 'S', 'T'].includes(e.stand)) errors.push(err(q + '.stand', 'A stand is short, tall or none.', '"S" | "T" | ""'));
+      if (e.phantom !== undefined && typeof e.phantom !== 'boolean') errors.push(err(q + '.phantom', '48V is true or false.', 'true'));
+      ['mic', 'clip', 'notes', 'port', 'portB', 'portC', 'portD', 'name', 'pos'].forEach(k => { if (e[k] !== undefined && typeof e[k] !== 'string') errors.push(err(q + '.' + k, '"' + k + '" is text.', '"..."')); }); });
+    if (Array.isArray(s.outputs)) s.outputs.forEach((r, i) => { if (!isObj(r)) return; const q = 'show.outputs[' + i + ']';
+      if (typeof r.type === 'string' && r.type !== 'Mono' && r.type !== 'Stereo') errors.push(err(q + '.type', 'An output is mono or stereo.', '"Mono" | "Stereo"'));
+      if (r.qty !== undefined && r.qty !== '' && !(typeof r.qty === 'number' && r.qty >= 0)) errors.push(err(q + '.qty', 'Quantity is a number (per side on a stereo row, unless qtyTotal is true).', '2'));
+      ['source', 'port', 'model', 'amp', 'use', 'placement', 'remarks'].forEach(k => { if (r[k] !== undefined && typeof r[k] !== 'string') errors.push(err(q + '.' + k, '"' + k + '" is text.', '"..."')); }); });
+    return errors;
+  }
+  /* FOH and monitor desk, as two-desks.js has them in the app (kept equal by tests/cases/zdesks.cjs): every output row belongs
+     to one desk; its bus comes from that desk, its socket from that desk's I/O ("MON …" for the monitor desk's own). */
+  const MON_USE = /monitor|wedge|\biem\b|in-ear|in ear|side ?fill|drum ?fill|\bmon\b/i, SPLIT_RACK = '__split__';
+  function desks(show, lib, SD) {
+    const su = show.setup || {}, m0 = isObj(show.mon) ? show.mon : null, on = !!(m0 && m0.on);
+    const m = Object.assign({ mixer: '', protocol: '', link: 'shared', rack1: 'none', rack2: 'none', manual: {}, dsProto: '', rate: null }, m0 || {});
+    const mix = n => (lib.mixers || []).find(x => x.model === n) || null, fohRate = SD.rateOf(su, mix(su.mixer)), sm = su.manual || {}, mm = m.manual || {};
+    function monSetup() {
+      if (m.link === 'shared') { const o = { mixer: m.mixer, protocol: su.protocol, rate: fohRate, nRacks: SD.rackKeys(su).length, manual: { mixer: mm.mixer || {} } }; SD.rackKeys(su).forEach(k => { o[k] = su[k]; o.manual[k] = sm[k]; }); return o; }
+      const mk = SD.rackKeys(m);
+      if (m.link === 'digital') { const o = { mixer: m.mixer, protocol: mk.some(k => m[k] !== 'none') && m.protocol === m.dsProto ? m.protocol : '', rack1: SPLIT_RACK, rate: fohRate, nRacks: mk.length + 1, manual: { mixer: mm.mixer || {} } }; mk.forEach((k, i) => { o['rack' + (i + 2)] = m[k]; o.manual['rack' + (i + 2)] = mm[k]; }); return o; }
+      const o = { mixer: m.mixer, protocol: m.protocol, rate: m.rate || fohRate, nRacks: mk.length, manual: { mixer: mm.mixer || {} } }; mk.forEach(k => { o[k] = m[k]; o.manual[k] = mm[k]; }); return o;
+    }
+    function monLib() {
+      if (m.link !== 'digital') return lib;
+      const a = SD.splitCapacity(mix(su.mixer), m.dsProto, fohRate), b = SD.splitCapacity(mix(m.mixer), m.dsProto, fohRate), cap = a == null || b == null ? 0 : Math.min(a, b);
+      return Object.assign({}, lib, { racks: lib.racks.concat([{ brand: '', model: SPLIT_RACK, type: 'Split', eco: 'resident', inputs: cap, outputs: 0, protocols: [m.dsProto], rates: [], shareable: true, onlyWith: [] }]) });
+    }
+    const resolve = d => d === 'MON' && on ? SD.resolve(monSetup(), monLib()) : SD.resolve(su, lib);
+    const auto = (use, model) => { const sp = model ? (lib.speakers || []).find(s => s.model === model) : null; return MON_USE.test(use || '') || (sp && /^(Monitor|IEM)$/i.test(sp.type || '')) ? 'MON' : 'FOH'; };
+    const of = r => on ? (r.desk === 'MON' || r.desk === 'FOH' ? r.desk : auto(r.use, r.model)) : 'FOH';
+    const portGroups = (d, type) => { const g = SD.portGroups(resolve(d), type); if (d !== 'MON' || !on) return g; const sh = m.link === 'shared'; return g.map(x => (!sh || /^Local/.test(x.label)) ? { label: 'MON ' + x.label, items: x.items.map(it => 'MON ' + it) } : x); };
+    const busGroups = (d, type) => SD.busGroups(resolve(d).c, type);
+    const used = (rows, idx, d) => { const s = new Set(); rows.forEach((r, i) => { if (i === idx || !isObj(r)) return; if (of(r) === d) SD.tokens(r.source).forEach(t => s.add(t)); SD.tokens(r.port).forEach(t => s.add(t)); }); return s; };
+    return { on, link: m.link, mixer: m.mixer, list: on ? ['FOH', 'MON'] : ['FOH'], resolve, auto, of, portGroups, busGroups, used, monSetup, monLib };
+  }
+  /* the PA tab's defaults for a design an agent writes: a group and a phase, ids, names, the kind that fits the speaker */
+  function paDefaults(s, o) {
+    const p = s.pa; if (!isObj(p)) return;
+    if (p.version == null) p.version = 1; ['zones', 'hangs'].forEach(k => { if (p[k] == null) p[k] = []; });
+    if (!Array.isArray(p.groups) || !p.groups.length) p.groups = [{ id: 'main', name: 'Main system', color: '#4c8df0' }];
+    if (!Array.isArray(p.phases) || !p.phases.length) p.phases = [{ id: 'show', name: 'Show', gains: {}, zones: {} }];
+    if (Array.isArray(p.zones)) p.zones.forEach((z, i) => { if (!isObj(z)) return; if (z.id == null) z.id = 'Z' + newId(); if (z.name == null) z.name = 'Zone ' + (i + 1); if (z.kind == null) z.kind = 'standing'; if (z.ear == null) z.ear = z.kind === 'seated' ? 1.2 : 1.7; if (z.z0 == null) z.z0 = 0; if (z.rake == null) z.rake = 0; });
+    const typeOf = m => { const sp = o.lib ? gearFind(o.lib, 'speakers', m) : null; return sp ? sp.type : (o.generic || {})[m] || ''; };
+    if (Array.isArray(p.hangs)) p.hangs.forEach((h, i) => { if (!isObj(h)) return; if (h.id == null) h.id = 'H' + newId();
+      if (h.kind == null && h.model) { const t = typeOf(h.model); h.kind = /sub/i.test(t) ? 'sub' : /line array|main pa/i.test(t) ? 'array' : 'point'; }
+      if (h.name == null) h.name = (h.kind === 'array' ? 'LA' : h.kind === 'sub' ? 'SUB' : 'FF') + (i + 1); if (h.group == null && isObj(p.groups[0])) h.group = p.groups[0].id;
+      if (h.n == null) h.n = 1; if (h.az == null) h.az = -90; if (h.kind !== 'sub' && h.auto == null) h.auto = true; if (h.aim == null) h.aim = []; });
+  }
+  /* wireless channels an agent writes: an id, own, active, no frequency yet (as RF.blank in rf-logic.js) */
+  function rfDefaults(s) {
+    const P = s.rf; if (!isObj(P)) return; if (P.channels == null) P.channels = [];
+    if (Array.isArray(P.channels)) P.channels.forEach(c => { if (!isObj(c)) return; if (c.id == null) c.id = newId(); if (c.role == null) c.role = 'own'; if (c.active == null) c.active = true; if (c.locked == null) c.locked = false; if (c.freq === undefined) c.freq = null;
+      ['name', 'type', 'maker', 'model', 'band', 'range', 'group', 'chan', 'zone', 'notes'].forEach(k => { if (c[k] == null) c[k] = ''; }); });
+  }
+  /* a new output row as the app makes it: mono (stereo for in-ears), quantity 1, the use that fits the speaker, the next free bus and socket */
+  function outDefaults(s, r, o) {
+    const lib = o.lib, SD = o.SD, sp = lib && r.model ? gearFind(lib, 'speakers', r.model) : null;
+    if (r.type == null) r.type = sp && sp.type === 'IEM' ? 'Stereo' : 'Mono';
+    if (r.qty == null) r.qty = 1;
+    if (r.use == null) r.use = sp && SD ? SD.DEFAULT_USE[sp.type] || '' : '';
+    if (SD && lib) { try {   // with a monitor desk: wedges, fills and in-ears go to it, with its buses and its sockets
+      const D = desks(s, lib, SD), dk = D.on ? (r.desk === 'MON' || r.desk === 'FOH' ? r.desk : D.auto(r.use, r.model)) : 'FOH'; if (D.on) r.desk = dk; else if (r.desk != null && r.desk !== 'FOH') delete r.desk;
+      if (r.source == null || r.port == null) { const used = D.used(s.outputs, s.outputs.indexOf(r), dk);
+        const free = gs => { for (const g of gs) for (const it of g.items) if (!SD.tokens(it).some(t => used.has(t))) return it; return ''; };
+        if (r.source == null) r.source = free(D.busGroups(dk, r.type)); if (r.port == null) r.port = free(D.portGroups(dk, r.type)); } } catch (e) { } }
+    ['source', 'port', 'model', 'placement', 'remarks'].forEach(k => { if (r[k] == null) r[k] = ''; });
+  }
+
   /* the catalogue: what an MCP server / CLI exposes. Few, task-shaped tools; each has an example. */
   const OPERATIONS = [
+    { name: 'overview', writes: false, description: 'Summary of the show: details, console, racks, what the console and racks can carry, how much is used, what is in each part, and the checks (capacity, patch, gear).', params: {}, example: {} },
+    { name: 'find_gear', writes: false, description: 'Search the gear library. Categories: mics, mounts, mixers (consoles), racks (stage boxes), speakers, amps, processors, wireless, interfaces. Returns exact model names and key properties; for one console also the stage racks and protocols that work with it.',
+      params: { query: 'string', category: 'string (optional)' }, example: { query: 'quantum 338', category: 'mixers' } },
     { name: 'get', writes: false, description: 'Read part of the show by dotted path ("inputs", "inputs.5", "outputs.2", "setup", "meta", "pa.hangs"). An empty path lists the top-level parts.',
       params: { path: 'string' }, example: { path: 'inputs.5' } },
     { name: 'set', writes: true, description: 'Change values in the show. Each change is a path and the new value as a JSON value. null removes a value. Path "outputs.+" appends to a list. Gear must be exact library model names.',
       params: { changes: '[{ path, value }]', dry_run: 'boolean', by: 'string (who made the change, for the review flag)' },
       example: { changes: [{ path: 'inputs.5.src', value: 'Snare top' }, { path: 'meta.venue', value: 'Paradiso' }], dry_run: true } },
-    { name: 'set_inputs', writes: true, description: 'Fill or replace several input channels at once. Mic/DI names are kept as asked; pass match (library lookup) to resolve them to exact model names, otherwise they are kept in the notes.',
-      params: { rows: '[{ ch, source, mic, phantom, stand, notes }]', dry_run: 'boolean', by: 'string' },
+    { name: 'set_inputs', writes: true, description: 'Fill or replace several input channels at once. Mic/DI names are kept as asked; pass match (library lookup) to resolve them to exact model names, otherwise they are kept in the notes. Leave phantom out to follow the library (48V for condensers and active DIs).',
+      params: { rows: '[{ ch, source, mic, phantom, stand, notes, clip, multi, pos, name, port }]', dry_run: 'boolean', by: 'string' },
       example: { rows: [{ ch: 1, source: 'Kick in', mic: 'Beta 91A', phantom: false, stand: '', notes: '' }] } },
     { name: 'validate', writes: false, description: 'Check a show file against the Lapis schema. Returns errors with the path, the problem and a valid example.', params: { file: 'showfile object' }, example: {} },
     { name: 'review', writes: false, description: 'List values made by an agent that a human has not yet confirmed.', params: {}, example: {} }
@@ -10946,6 +11114,11 @@ const SDShowOps = (() => {
       const was = new Set(SCH.validate({ app: 'lapis', version: SCH.FORMAT, show: before }).errors.map(e => e.path + '|' + e.message));
       r.errors.forEach(e => { if (!was.has(e.path + '|' + e.message)) errors.push(e); });   // only problems this call introduced
     }
+    if (o.validate !== false) {   // library and list-value rules; equivalent gear names become the exact library name
+      const was = new Set(ruleErrors(clone(before), o.lib, false, o.generic).map(e => e.path + '|' + e.message));
+      ruleErrors(s, o.lib, true, o.generic).forEach(e => { if (!was.has(e.path + '|' + e.message)) errors.push(e); });
+    }
+    changed = changed.filter(c => { const now = getAt(s, parts(c.path)); c.to = short(now); const keep = c.added || JSON.stringify(getAt(before, parts(c.path))) !== JSON.stringify(now); delete c.added; return keep; });
     if (errors.length) return fail(errors, o.dry_run);
     if (changed.length && o.by) { s.review = s.review || {}; const at = o.at || new Date().toISOString(); changed.forEach(c => { s.review[c.path] = { by: o.by, at }; }); }
     return { ok: true, show: o.dry_run ? null : s, changed, errors: [], dry_run: !!o.dry_run };
@@ -10955,12 +11128,33 @@ const SDShowOps = (() => {
     o = o || {};
     const p = plan(show, changes); if (p.errors.length) return fail(p.errors, o.dry_run);
     const s = clone(show), changed = [];
-    for (const { ps, v, from } of p.plan) {
-      const e = ps[0] === 'inputs' && ps.length === 3 && !IN_FIELDS.includes(ps[2]) ? `"${ps[2]}" is not an input field.` : writeAt(s, ps, v);
+    const touched = {}, added = [];   // input channels this call wrote (and which fields), output rows it appended
+    for (const item of p.plan) {
+      const { ps, from } = item; let v = item.v;
+      const inCh = ps[0] === 'inputs' && /^\d+$/.test(ps[1] || '') ? ps[1] : null;
+      if (inCh && ps.length === 3 && ps[2] === 'stand') v = v === 'tall' ? 'T' : v === 'short' ? 'S' : v;
+      if (inCh && ps.length === 2 && isObj(v)) { v = clone(v); if (v.stand === 'tall') v.stand = 'T'; else if (v.stand === 'short') v.stand = 'S'; }
+      const badKey = !inCh ? '' : ps.length === 3 ? (IN_FIELDS.includes(ps[2]) ? '' : ps[2]) : ps.length === 2 && isObj(v) ? Object.keys(v).find(k => !IN_FIELDS.includes(k)) || '' : '';
+      const e = badKey ? `"${badKey}" is not an input field.` : writeAt(s, ps, v);
       if (e) return fail([err(ps.join('.'), e, ps[0] === 'inputs' ? IN_FIELDS.join(' | ') : '')], o.dry_run);
-      if (JSON.stringify(from) !== JSON.stringify(getAt(s, ps)) || ps[ps.length - 1] === '+') changed.push({ path: ps.join('.'), from: short(from), to: short(getAt(s, ps)) });
+      if (inCh) { const t = touched[inCh] = touched[inCh] || {}; if (ps.length === 3) t[ps[2]] = true; else if (isObj(v)) Object.keys(v).forEach(k => { t[k] = true; }); }
+      if (ps[ps.length - 1] === '+') {   // reported (and flagged for review) under the row's real index
+        if (v === null) continue;
+        const arr = getAt(s, ps.slice(0, -1)), row = arr[arr.length - 1];
+        if (ps[0] === 'outputs' && ps.length === 2 && isObj(row)) added.push(row);
+        changed.push({ path: ps.slice(0, -1).concat(String(arr.length - 1)).join('.'), from: short(undefined), to: '', added: true });
+      } else if (JSON.stringify(from) !== JSON.stringify(getAt(s, ps))) changed.push({ path: ps.join('.'), from: short(from), to: '' });
     }
-    if (s.outputs) s.outputs.forEach(r => { if (r && !r.id && typeof o.uid === 'function') r.id = o.uid(); });
+    /* as on the Inputs tab: 48V follows the microphone unless this call set it; a channel with nothing in it is removed */
+    Object.entries(touched).forEach(([ch, t]) => { const e = s.inputs && s.inputs[ch]; if (!isObj(e)) return;
+      if (t.mic && !t.phantom && o.lib) { const m = gearFind(o.lib, 'mics', e.mic); if (m && m.phantom) e.phantom = true; else delete e.phantom; }
+      if (!e.mic) delete e.phantom;
+      ['name', 'port', 'portB', 'portC', 'portD', 'pos', 'clip', 'multi', 'stand', 'notes'].forEach(k => { if (k in e && !String(e[k] == null ? '' : e[k]).trim()) delete e[k]; });
+      if (!IN_FIELDS.some(k => e[k])) delete s.inputs[ch]; });
+    added.forEach(r => outDefaults(s, r, o));
+    if (p.plan.some(x => x.ps[0] === 'pa')) paDefaults(s, o);
+    if (p.plan.some(x => x.ps[0] === 'rf')) rfDefaults(s);
+    if (Array.isArray(s.outputs)) s.outputs.forEach(r => { if (isObj(r) && !r.id) r.id = typeof o.uid === 'function' ? o.uid() : newId(); });
     return finish(show, s, changed, o);
   }
 
@@ -10968,16 +11162,19 @@ const SDShowOps = (() => {
   function setInputs(show, rows, o) {
     o = o || {};
     if (!Array.isArray(rows) || !rows.length) return fail([err('rows', 'No rows given.', '[{ "ch": 1, "source": "Kick in", "mic": "Beta 91A", "phantom": false, "stand": "", "notes": "" }]')], o.dry_run);
-    const list = rows.slice(0, 256).filter(r => r && r.ch > 0), s = clone(show), changed = [], miss = [], over = [], max = o.maxIn || 512;
+    const list = rows.slice(0, 256).filter(r => r && r.ch > 0), s = clone(show), changed = [], miss = [], over = [];
+    let max = o.maxIn || 0; if (!max && o.SD && o.lib) { try { max = o.SD.resolve(s.setup, o.lib).c.totalIn || 0; } catch (e) { } } max = max || 512;
     s.inputs = s.inputs || {};
     list.forEach(r => {
       const ch = r.ch | 0; if (ch > max) over.push(ch);
       const mic = o.match ? o.match(r.mic) : '', e = {};
       const src = String(r.source || '').slice(0, 60); if (src) e.src = src;
       if (mic) e.mic = mic; else if (r.mic) miss.push(`${ch}: ${r.mic}`);
-      if (r.stand === 'tall') e.stand = 'T'; else if (r.stand === 'short') e.stand = 'S';
+      if (r.stand === 'tall' || r.stand === 'T') e.stand = 'T'; else if (r.stand === 'short' || r.stand === 'S') e.stand = 'S';
+      if (r.clip) { const m = o.lib ? gearFind(o.lib, 'mounts', r.clip) : null; if (m) e.clip = m.model; else miss.push(`${ch}: ${r.clip} (clip or mount)`); }
+      ['multi', 'pos', 'name', 'port', 'portB'].forEach(k => { const x = r[k] == null ? '' : String(r[k]).trim(); if (x) e[k] = x.slice(0, 60); });
       const notes = [r.notes, !mic && r.mic ? 'asked: ' + r.mic : ''].filter(Boolean).join(' · '); if (notes) e.notes = notes.slice(0, 200);
-      if (r.phantom && mic) e.phantom = true;
+      if (mic && (r.phantom === true || (r.phantom == null && o.lib && (gearFind(o.lib, 'mics', mic) || {}).phantom))) e.phantom = true;
       const was = s.inputs[ch];
       if (Object.keys(e).length) s.inputs[ch] = e; else delete s.inputs[ch];
       if (JSON.stringify(was) !== JSON.stringify(s.inputs[ch])) changed.push({ path: 'inputs.' + ch, from: short(was), to: short(s.inputs[ch]) });
@@ -10987,16 +11184,380 @@ const SDShowOps = (() => {
     return r;
   }
 
+  /* ---------- reading: checks, overview, library search (o.lib = library, o.SD = core-state-library.js) ---------- */
+  /* What the app would warn about, as { level: 'bad' | 'warn' | 'info', message }. Not a refusal: the show still saves. */
+  function checks(show, o) {
+    o = o || {}; const lib = o.lib, SD = o.SD, out = [], add = (level, message) => { if (!out.some(x => x.message === message)) out.push({ level: level || 'info', message }); };
+    ruleErrors(clone(show), lib, false, o.generic).forEach(e => add('bad', e.path.replace(/^show\./, '') + ': ' + e.message + (e.valid ? ' Valid: ' + e.valid : '')));
+    if (!lib || !SD) return out;
+    const st = show.setup || {};
+    if (!st.mixer) { add('info', 'No console chosen yet (setup.mixer): capacity and patch checks start once it is set.'); return out; }
+    const mx = gearFind(lib, 'mixers', st.mixer); if (!mx) return out;
+    if (!st.protocol && (mx.protocols || []).length && SD.rackKeys(st).some(k => st[k] && st[k] !== 'none')) add('warn', 'No protocol chosen between the ' + mx.model + ' and its racks (setup.protocol): ' + mx.protocols.join(' | ') + '.');
+    try {
+      SD.setupIssues(st, lib).forEach(x => add(x[0], x[1]));
+      SD.patchIssues(show, lib).forEach(x => add(x[0], x[1]));
+      const R = SD.resolve(st, lib), c = R.c, ins = Object.keys(show.inputs || {}).map(Number).filter(ch => show.inputs[ch] && (show.inputs[ch].src || show.inputs[ch].mic));
+      const over = ins.filter(ch => c.totalIn != null && ch > c.totalIn); if (over.length) add('warn', 'Channels ' + over.join(', ') + ' are above the ' + c.totalIn + ' input channels this console and its racks give.');
+      const D = desks(show, lib, SD), rows = (show.outputs || []).filter(isObj), seen = {}, K = {};
+      if (D.on) { if (!D.mixer) add('warn', 'The monitor desk is on but has no console yet (mon.mixer).'); else SD.setupIssues(D.monSetup(), D.monLib(), 'Monitors').forEach(x => add(x[0], x[1])); }
+      const known = (d, t) => K[d + t] || (K[d + t] = new Set([].concat(...D.busGroups(d, t).map(g => g.items), ...D.portGroups(d, t).map(g => g.items))));
+      rows.forEach(r => { const n = show.outputs.indexOf(r) + 1, d = D.of(r), k = known(d, r.type === 'Stereo' ? 'Stereo' : 'Mono');
+        ['source', 'port'].forEach(f => { const v = r[f]; if (!v) return; const tag = f === 'source' && D.on ? d + ' ' : '';
+          if (/^(Aux|Matrix) \d|^(MON )?(R\d+: Out|Local Out|Card Out) \d/.test(v) && !k.has(v)) add('warn', 'Output ' + n + ': "' + v + '" does not exist on ' + (D.on ? (d === 'MON' ? 'the monitor desk' : 'the FOH desk') : 'this console') + ' and its racks' + (r.type === 'Stereo' ? ' as a stereo pair (pairs are written "Aux 1+2", "R1: Out 01+02").' : '.'));
+          SD.tokens(v).forEach(t => { (seen[tag + t] = seen[tag + t] || []).push(n); }); }); });
+      Object.entries(seen).forEach(([t, ns]) => { if (ns.length > 1) add('warn', t + ' is used by output rows ' + ns.join(' and ') + '.'); });
+    } catch (e) { add('info', 'The setup checks could not run: ' + e.message); }
+    return out;
+  }
+  function overview(show, o) {
+    o = o || {}; const lib = o.lib, SD = o.SD, st = show.setup || {}, n = v => Array.isArray(v) ? v.length : 0, res = { show: show.meta };
+    if (lib && SD) { try { const R = SD.resolve(st, lib), c = R.c;
+      res.console = R.mixer ? SD.label(R.mixer) : null; res.protocol = st.protocol || null; res.stage_racks = R.racks.filter(Boolean).map(r => SD.label(r));
+      if (R.mixer) { res.capacity = { console_channels: c.channels, channels_with_a_socket: c.totalIn, stage_inputs: c.stageIn, local_inputs: c.localIn, stage_outputs: c.stageOut, local_outputs: c.localOut, aux_buses: c.busses, matrices: c.matrix, sample_rate_khz: c.rate };
+        const D = desks(show, lib, SD), nf = d => { const used = D.used(show.outputs || [], -1, d), free = gs => { const a = []; gs.forEach(g => g.items.forEach(it => { if (a.length < 6 && !used.has(it)) a.push(it); })); return a; }; return { bus: free(D.busGroups(d, 'Mono')), rack_output: free(D.portGroups(d, 'Mono')) }; };
+        res.next_free = nf('FOH');
+        if (D.on) { const M = D.resolve('MON'); res.monitor_desk = { console: M.mixer ? SD.label(M.mixer) : null, link: D.link, aux_buses: M.c.busses, matrices: M.c.matrix, next_free: nf('MON'), rows: (show.outputs || []).filter(r => isObj(r) && D.of(r) === 'MON').length, note: 'Wedges, fills and in-ear rows go to this desk by their use or speaker type; set "desk": "FOH" or "MON" on a row to choose.' }; }
+        res.mics_and_stands = SD.stats(show, lib); }
+    } catch (e) { res.setup_error = e.message; } }
+    else { res.console = st.mixer || null; res.protocol = st.protocol || null; }
+    const ins = Object.values(show.inputs || {}).filter(e => e && (e.src || e.mic));
+    res.inputs_used = ins.length; res.inputs_patched = ins.filter(e => e.port || e.portB).length; res.outputs = n(show.outputs);
+    const cnt = { rf_channels: n((show.rf || {}).channels), buses: n((show.buses || {}).list), effects: n((show.buses || {}).fx), snapshots: n((show.scenes || {}).list), other_equipment: n(show.extraGear),
+      pa_hangs: n((show.pa || {}).hangs), pa_zones: n((show.pa || {}).zones), racks: n(show.racks), cable_runs: n((show.cables || {}).runs), wireless_receivers: n((show.wireless || {}).receivers), show_logs: n(show.logs) };
+    res.also_in_the_show = Object.fromEntries(Object.entries(cnt).filter(x => x[1]));
+    if (lib) { const un = gearSlots(show, o.generic).map(g => gearFind(lib, g.cat, g.o[g.k])).filter(x => x && x.verified === false).map(x => x.model);   // data not yet checked against the maker's sheet
+      if (un.length) res.unverified_gear = { models: [...new Set(un)], note: 'The library values of these models (channel counts, protocols, limits) are not yet checked against the maker\'s data: tell the person to confirm them.' }; }
+    res.checks = checks(show, o); res.unreviewed = review(show).length;
+    res.parts = Object.keys(show).filter(k => !NO_EDIT.includes(k) && k !== 'review');
+    return res;
+  }
+  function findGear(lib, a, SD) {
+    a = a || {}; if (a.category && !LIB_CATS.includes(a.category)) return { ok: false, errors: [err('category', 'No such category "' + a.category + '".', LIB_CATS.join(' | '))] };
+    const cats = a.category ? [a.category] : LIB_CATS, words = String(a.query || '').toLowerCase().split(/\s+/).filter(Boolean), hits = [];
+    cats.forEach(cat => ((lib && lib[cat]) || []).forEach(it => { const hay = [it.brand, it.model, it.type, it.kind, it.use, ...(it.aliases || [])].join(' ').toLowerCase(), flat = hay.replace(/[^a-z0-9]/g, '');
+      if (words.every(w => hay.includes(w) || flat.includes(w.replace(/[^a-z0-9]/g, '') || w))) hits.push({ category: cat, item: it }); }));
+    const max = Math.max(1, Math.min(80, a.limit | 0 || 20)), brief = hits.length > 5, KEEP = ['brand', 'model', 'type', 'kind', 'use', 'channels', 'inputs', 'outputs', 'protocols', 'phantom', 'di', 'amp', 'chPerRx', 'verified'];
+    const res = { found: hits.length, items: hits.slice(0, max).map(({ category, item }) => { const x = { category };
+      Object.entries(item).forEach(([k, v]) => { if (['id', 'rate'].includes(k) || (brief && ['src', 'checked'].includes(k)) || v == null || v === '' || (Array.isArray(v) && !v.length) || (isObj(v) && !Object.keys(v).length)) return; if (brief && !KEEP.includes(k)) return; x[k] = typeof v === 'string' && v.length > 160 ? v.slice(0, 157) + '…' : v; }); if (x.src !== undefined) { x.source = x.src; delete x.src; } if (x.checked !== undefined) { x.source_checked = x.checked; delete x.checked; } return x; }) };
+    if (res.items.some(x => x.verified === false)) res.verified_note = '"verified": false means the values are not yet checked against the maker\'s data.';
+    if (hits.length > max) res.note = 'More found: narrow the search, pass a category or a higher limit.';
+    else if (brief) res.note = 'Short form: search one model for all its properties.';
+    const one = hits.length === 1 && hits[0].category === 'mixers' ? hits[0].item : null;
+    if (one && SD) { try { res.works_with = SD.deskPlan(one, lib, (one.rates || [])[0] || 48).filter(p => p.status === 'ok').slice(0, 30).map(p => ({ rack: p.rack.model, protocol: p.protocol, most: p.max, inputs: p.rack.inputs, outputs: p.rack.outputs })); } catch (e) { } }
+    return res;
+  }
+  /* a new, empty show (the same as Shows › New in the app); meta is optional text for the Show tab */
+  function newShow(SD, meta, uid) {
+    const t = Date.now(), s = SD && SD.blankShow ? SD.blankShow(uid || newId()) : { id: uid || newId(), created: t, updated: t, meta: { production: '', venue: '', soundcheck: '', showtime: '', revision: 'V1', notes: '' }, setup: { mixer: '', protocol: '', rack1: 'none', rack2: 'none', manual: {} }, inputs: {}, outputs: [] };
+    Object.entries(meta || {}).forEach(([k, v]) => { if (typeof v === 'string' && v) s.meta[k] = v; });
+    return s;
+  }
+
   function review(show) { return Object.entries(show.review || {}).map(([path, v]) => ({ path, by: v.by, at: v.at })); }
   function confirmReview(show, paths) {   // the human clears the flag (app side); returns a new show
     const s = clone(show); if (s.review) { (paths || Object.keys(s.review)).forEach(p => { delete s.review[p]; }); if (!Object.keys(s.review).length) delete s.review; } return s;
   }
 
-  return { OPERATIONS, NO_EDIT, IN_FIELDS, parts, get, plan, set, setInputs, review, confirmReview };
+  return { OPERATIONS, NO_EDIT, IN_FIELDS, LIB_CATS, parts, get, plan, set, setInputs, review, confirmReview, checks, overview, findGear, gearFind, newShow, desks };
 })();
 if (typeof module !== 'undefined') module.exports = SDShowOps; else (typeof window !== 'undefined' ? window : self).SDShowOps = SDShowOps;
 </script>
-<script>const LAPIS_VERSION = '2.21.0';</script>
+<script id="review">/* Review of assistant-made values (2.22). An AI client that changes a show file through the Lapis tools (MCP server, CLI) leaves a
+   flag per value in show.review (path -> { by, at }; see show-ops.js). Agents design, humans operate: only a person clears the flags,
+   here. A bar under the header says how many values wait; Review lists them with their present value; Confirm clears one, a part
+   or all. Until then, anything sent to the desk (names, 48V, gain, patch, channel presets) asks first, once per show and session. */
+const SDReview = (() => {
+  const TAB = { meta: 'show', setup: 'system', mon: 'system', inputs: 'inputs', outputs: 'outputs', pa: 'pa', rf: 'rf', power: 'power', network: 'network', net: 'network', extraGear: 'equipment', scenes: 'scenes', control: 'control', tour: 'tour', buses: 'outputs' };
+  const PART = { meta: 'Show details', setup: 'Console and racks', mon: 'Monitor desk', inputs: 'Inputs', outputs: 'Outputs', pa: 'PA design', rf: 'RF', power: 'Power', extraGear: 'Other equipment' };
+  const WRITES = ['/v2/write', '/v2/gain', '/v2/patchsel'];
+  let okFor = '';
+  const list = () => window.SDShowOps ? SDShowOps.review(S.show) : [];
+  const root = p => String(p).split('.')[0];
+  /* a path and its value in a sound engineer's words: "Input 5", "Kick in · Beta 91A · 48V" */
+  const FIELD = { src: 'instrument', mic: 'mic / DI', phantom: '48V', stand: 'stand', clip: 'clip', multi: 'multi', notes: 'remarks', port: 'socket', portB: 'source B', name: 'desk name', pos: 'stage position', mixer: 'Console', protocol: 'Protocol', model: 'speaker', qty: 'quantity', source: 'bus', use: 'use', amp: 'amplifier' };
+  const label = p => { const a = String(p).split('.'), f = a[2] ? ' · ' + (FIELD[a[2]] || a[2]) : '';
+    if (a[0] === 'inputs' && a[1]) return 'Input ' + a[1] + f; if (a[0] === 'outputs' && /^\d+$/.test(a[1] || '')) return 'Output ' + (+a[1] + 1) + f;
+    if (a[0] === 'setup' && /^rack\d+$/.test(a[1] || '')) return 'Stage rack ' + a[1].slice(4); if ((a[0] === 'setup' || a[0] === 'meta') && a.length === 2) return FIELD[a[1]] || a[1][0].toUpperCase() + a[1].slice(1);
+    return p; };
+  const say = (k, v) => v === true ? (FIELD[k] || k) : v === false || v == null || v === '' ? '' : k === 'stand' ? (v === 'T' ? 'tall stand' : v === 'S' ? 'short stand' : '') : k === 'qty' ? v + ' ×' : typeof v === 'object' ? '' : String(v);
+  const val = p => { const v = SDShowOps.get(S.show, p).value, k = String(p).split('.').pop();
+    const s = v == null ? '(removed)' : Array.isArray(v) ? v.length + ' rows' : typeof v === 'object' ? Object.entries(v).filter(x => x[0] !== 'id').map(x => say(x[0], x[1])).filter(Boolean).join(' · ') || '(empty)' : v === true ? 'on' : v === false ? 'off' : k === 'stand' ? say(k, v) || 'none' : String(v);
+    return s.length > 110 ? s.slice(0, 107) + '…' : s; };
+  const who = by => String(by || '').replace(/^agent:/, '') || 'assistant';
+  function refresh() {
+    const b = $('#reviewBar'); if (!b) return; const n = list().length;
+    b.hidden = !n;
+    b.innerHTML = n ? `<span><b>${n} value${n === 1 ? '' : 's'}</b> in this show ${n === 1 ? 'was' : 'were'} set by an assistant and ${n === 1 ? 'is' : 'are'} not reviewed yet.</span><button class="btn sm" data-act="rv-open">Review</button>` : '';
+  }
+  function open() {
+    const d = $('#dlg'), L = list(), groups = {}; L.forEach(x => { (groups[root(x.path)] = groups[root(x.path)] || []).push(x); });
+    const body = L.length ? Object.entries(groups).map(([g, rows]) => `<h3 class="rv-g">${esc(PART[g] || g)} · ${rows.length}<span class="rv-ga">${TAB[g] ? `<button class="btn sm ghost" data-act="rv-go" data-tab="${TAB[g]}">Open the tab</button>` : ''}<button class="btn sm" data-act="rv-part" data-part="${esc(g)}">Confirm these</button></span></h3>` +
+      rows.map(x => `<div class="showrow rv"><div class="n"><b title="${esc(x.path)}">${esc(label(x.path))}</b><span class="mute">${esc(val(x.path))}</span></div><span class="mute rv-by">${esc(who(x.by))}${x.at ? ' · ' + esc(new Date(x.at).toLocaleDateString()) : ''}</span><button class="btn sm" data-act="rv-one" data-path="${esc(x.path)}">Confirm</button></div>`).join('')).join('')
+      : '<p class="mute">Nothing waits for review.</p>';
+    d.innerHTML = `<div class="dlg-h"><h2>Set by an assistant · ${L.length}</h2><button class="btn sm ghost" data-act="close-dlg">Close</button></div><div class="dlg-b"><p class="mute" style="margin-top:0">Check each value against the rider or your own plan. Confirm means: I have looked at it and it is right. Change anything on its tab first; a confirmed value is an ordinary value.</p>${body}</div><div class="dlg-f">${L.length ? '<button class="btn primary" data-act="rv-all">Confirm all</button>' : ''}</div>`;
+    if (!d.open) d.showModal();
+  }
+  function clear(paths) {
+    if (!paths.length) return; S.show = Object.assign(S.show, { review: SDShowOps.confirmReview(S.show, paths).review }); if (!S.show.review) delete S.show.review;
+    if (window.SDLog) SDLog.add('note', `Reviewed ${paths.length} assistant-made value${paths.length === 1 ? '' : 's'}`);
+    queueSave(); refresh(); if (list().length) open(); else { $('#dlg').close(); }
+  }
+  /* true when the call may go: not a write to the desk, nothing waits, or the user said "send anyway" for this show's present list */
+  function gate(path, body) {
+    const write = WRITES.includes(path) || ((path === '/v2/patch' || path === '/v2/strip') && body && (body.confirm === true || body.action === 'write'));
+    if (!write) return true; const n = list().length, key = S.show.id + ':' + n; if (!n || okFor === key) return true;
+    const parts = {}; list().forEach(x => { const g = PART[root(x.path)] || root(x.path); parts[g] = (parts[g] || 0) + 1; });
+    if (!confirm(`${n} value${n === 1 ? '' : 's'} in this show ${n === 1 ? 'was' : 'were'} set by an assistant and nobody has reviewed ${n === 1 ? 'it' : 'them'} yet:\n\n${Object.entries(parts).map(([g, k]) => '  ' + g + ': ' + k).join('\n')}\n\nReview them first (the bar under the header), or send to the desk anyway?`)) return false;
+    okFor = key; return true;
+  }
+  ACT['rv-open'] = open;
+  ACT['rv-all'] = () => clear(list().map(x => x.path));
+  ACT['rv-one'] = b => clear([b.dataset.path]);
+  ACT['rv-part'] = b => clear(list().filter(x => root(x.path) === b.dataset.part).map(x => x.path));
+  ACT['rv-go'] = b => { $('#dlg').close(); go(b.dataset.tab); };
+  return { refresh, open, gate, list };
+})();
+window.SDReview = SDReview;
+</script>
+<script id="show-engines">/* Show engines for agents and scripts (pure, no DOM; runs in the page, Node, the CLI and the MCP server).
+   The calculations of the PA and RF tabs on a show object, as short summaries an AI client can act on. Nothing here changes
+   the show except rfPlan(…, { assign: true }), which returns a new show with frequencies filled in (the caller keeps or drops it).
+   The engines come in through o: o.PA = SDPAEngine (pa-engine.js), o.HEAR = SDHearing (pa-hearing.js), o.RF = RF (rf-logic.js),
+   o.ZONE = SDZone (rf-location.js), o.lib = the gear library. Every answer names its method and what it is not. */
+const SDShowEngines = (() => {
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const r1 = v => v == null || !isFinite(v) ? null : Math.round(v * 10) / 10, r2 = v => v == null || !isFinite(v) ? null : Math.round(v * 100) / 100;
+  const err = (path, message, valid) => ({ ok: false, errors: [{ path, message, valid: valid || '' }] });
+  const roleOf = (ph, z) => (ph.zones || {})[z.id] || (z.kind === 'quiet' ? 'quiet' : z.kind === 'corridor' || z.kind === 'wall' ? 'off' : 'audience');
+
+  /* the PA tab's own defaults, on a copy (pa.js data()) */
+  function paData(show) {
+    const p = clone(show.pa || {});
+    p.zones = p.zones || []; p.hangs = p.hangs || []; p.seatPool = p.seatPool || []; p.profiles = p.profiles || {};
+    if (!p.groups || !p.groups.length) p.groups = [{ id: 'main', name: 'Main system' }];
+    if (!p.phases || !p.phases.length) p.phases = [{ id: 'show', name: 'Show', gains: {}, zones: {} }];
+    p.acoustics = Object.assign({ rt60: 2.0, volume: 20000, snr: 10 }, p.acoustics || {});
+    p.environment = Object.assign({ temp: 20, rh: 50, altitude: 0, xover: 100, floor: true }, p.environment || {});
+    p.rig = Object.assign({ motorWLL: 1000, motorsPerHang: 2 }, p.rig || {}); p.centre = p.centre || [0, 0]; p.measured = p.measured || {};
+    return p;
+  }
+  const stat = s => s ? { seats: s.n, spread_db: s.spread, low_5pct_db: s.p05, high_95pct_db: s.p95, within_3db_pct: s.in3, median_db: s.median } : null;
+
+  /* PA design report: what the PA tab works out. o.phase = one phase id (default: every phase, at most 6); o.band = map band in Hz (default 2000). */
+  function pa(show, o) {
+    o = o || {}; const E = o.PA; if (!E) return err('', 'The PA engine is not loaded.', '');
+    if (!show.pa || !Array.isArray(show.pa.hangs) || !show.pa.hangs.length) return err('pa.hangs', 'This show has no PA design yet: no hangs.', 'add zones and hangs with set (see the guide, "PA design")');
+    const p = paData(show), lib = o.lib || { speakers: [] };
+    const typeOf = m => { const s = (lib.speakers || []).find(x => x.model === m); return s ? s.type : E.GENERIC[m] ? E.GENERIC[m].type : ''; };
+    const profiles = Object.assign({}, p.profiles); Object.entries(p.measured || {}).forEach(([mo, t]) => { if (t && t.tf) profiles[mo] = Object.assign({}, profiles[mo] || {}, { tf: t.tf }); });
+    let model; try { model = E.solve(p, { profiles, typeOf }); } catch (e) { return err('pa', 'The PA engine could not solve this design: ' + e.message, 'check the hangs and zones with validate'); }
+    const zname = id => { const z = p.zones.find(x => x.id === id); return z ? z.name || id : id; };
+    const listeners = {}; p.zones.forEach(z => { listeners[z.id] = (model.zones[z.id]._recv || []).length; });
+    const hangs = model.sols.map(s => { const h = s.h, t = s.el.tilt, x = { id: h.id, name: h.name, kind: h.kind, model: h.model, boxes: h.n, at: [h.x, h.y], aims_bearing_deg: E.bearing(h.az), trim_m: h.trim == null ? null : +h.trim };
+      if (h.kind === 'array') { x.splay = h.auto === false ? 'as set' : 'worked out'; x.tilt_top_deg = r1(t[0]); x.tilt_bottom_deg = r1(t[t.length - 1]); x.splays_deg = s.el.splay.slice(0, h.n - 1); x.shading_db = s.el.gain.some(g => g) ? s.el.gain.map(r1) : undefined; }
+      else if (h.kind === 'point') x.tilt_deg = r1(t[0]);
+      if (s.bottom != null) x.lowest_edge_m = r2(Math.max(0, s.bottom));
+      if (h.kind === 'sub' && s.bottom != null && s.bottom <= 0.25) x.stands_on_the_ground = true;
+      x.weight_kg = Math.round(s.weight); if (s.balance && !x.stands_on_the_ground) x.hangs_on_two_points = !!s.balance.ok;
+      if (h.delay) x.delay_ms = +h.delay; if (h.polarity === -1) x.polarity = 'inverted';
+      if (s.notes && s.notes.length) x.notes = s.notes; return x; });
+    const want = o.phase ? p.phases.filter(x => x.id === o.phase || x.name === o.phase) : p.phases.slice(0, 6);
+    if (o.phase && !want.length) return err('phase', 'No phase "' + o.phase + '".', p.phases.map(x => '"' + x.id + '"').join(' | '));
+    const band = +o.band || 2000, phases = want.map(ph0 => {
+      const zones = {}, gains = {}; p.zones.forEach(z => { zones[z.id] = roleOf(ph0, z); }); p.groups.forEach(g => { const v = (ph0.gains || {})[g.id]; gains[g.id] = v === null || v === 'off' ? null : +v || 0; });
+      const ph = { id: ph0.id, name: ph0.name, zones, gains }, out = { id: ph.id, name: ph.name };
+      let r; try { r = E.phaseReport(p, model, ph, { band }); } catch (e) { out.error = e.message; return out; }
+      if (r.empty) { out.empty = r.muted ? 'every group is off in this phase' : 'no audience zone with listeners in this phase (a zone needs an outline of at least 3 points, or seats)'; return out; }
+      out.coverage = { band_hz: band, audience: stat(r.audience), zones: Object.fromEntries(Object.entries(r.zones).map(([id, s]) => [zname(id), stat(s)])) };
+      if (r.quiet) out.quiet_zones = { level_re_audience_db: r.quiet.median, loudest_5pct_db: r.quiet.p95, at_125_hz_db: r.quietLow ? r.quietLow.median : undefined };
+      if (r.maxSPL != null) out.max_spl_db_peak_1khz_median_seat = r.maxSPL;
+      if (r.sti) out.sti = { quiet_room: r.sti.quiet.mean, worst_tenth: r.sti.quiet.p10, with_noise: r.sti.noise.mean, with_noise_worst_tenth: r.sti.noise.p10, snr_db: p.acoustics.snr };
+      if (r.echo) out.arrivals = { seats_hearing_an_echo_pct: r.echo.pctEcho, seats_with_a_late_arrival_over_50ms_pct: r.echo.pctLate50 };
+      /* subs against the tops around the crossover: the delay and polarity on the subs that sum best over the audience (engine subAlign) */
+      try { const subs = p.hangs.filter(h => h.kind === 'sub' && gains[h.group] !== null).map(h => h.id), tops = p.hangs.filter(h => h.kind === 'array' && gains[h.group] !== null).map(h => h.id);
+        if (subs.length && tops.length) { const step = Math.max(1, Math.floor(r.recv.length / 90)), a = E.subAlign(model, ph, r.recv.filter((_, i) => i % step === 0), subs, tops);
+          /* by path (d&b TI 385, McCarthy 14.9): at mid-depth of the audience, the nearest top against the nearest sub, with the delays already set */
+          let byPath; { const S = model.sols, at = id => { const q = S.find(x => x.h.id === id), zs = q.el.z, z = zs.reduce((u, v) => u + v, 0) / zs.length; return { x: +q.h.x, y: +q.h.y, z, d: +q.h.delay || 0, name: q.h.name }; }, T = tops.map(at), B = subs.map(at);
+            const cx = T.reduce((u, v) => u + v.x, 0) / T.length, cy = T.reduce((u, v) => u + v.y, 0) / T.length, far = r.recv.map(P => Math.hypot(P[0] - cx, P[1] - cy)).sort((u, v) => u - v), mid = far[Math.floor(far.length / 2)];
+            const P = r.recv.reduce((b, q) => Math.abs(Math.hypot(q[0] - cx, q[1] - cy) - mid) < Math.abs(Math.hypot(b[0] - cx, b[1] - cy) - mid) ? q : b, r.recv[0]), c = model.env.c;
+            const arr = L => L.map(v => ({ v, t: Math.hypot(P[0] - v.x, P[1] - v.y, P[2] - v.z) / c * 1000 + v.d })).sort((u, v) => u.t - v.t)[0], tt = arr(T), tb = arr(B);
+            byPath = { add_to_sub_delay_ms: r1(tt.t - tb.t), listening_point: [r1(P[0]), r1(P[1])], nearest_top: tt.v.name, nearest_sub: tb.v.name }; }
+          if (a) out.sub_alignment = { crossover_hz: a.xo, as_designed_db: a.now, best_db: a.gain, add_to_sub_delay_ms: a.ms, sub_polarity: a.pol < 0 ? 'inverted' : 'normal', clear_by_db: a.margin === 99 || a.margin <= 0 ? undefined : a.margin, by_path: byPath, note: 'Two figures. by_path: the arrival-time difference of the nearest top and the nearest sub at mid-depth of the audience, delays as set (the method of d&b TI 385 and McCarthy 14.9): start from this one. add_to_sub_delay_ms / sub_polarity: what sums best in the model, which knows the magnitude of the speakers but not the phase of their crossover filters, so its polarity and fine delay are an estimate. Summation of subs and tops from half to twice the crossover, 0 dB = no gain over the two alone, +3 dB = fully in phase. A negative delay means: delay the tops instead. From planning data unless both have a measured response; align by measurement on site.' }; } } catch (e) { }
+      if (o.HEAR) { try { const hr = o.HEAR.compute(p, model, ph, { samples: 300 }); if (hr && !hr.empty) out.level = { show_level_dba: r1(hr.target), reference: hr.refName, loudest_seat_dba: r1(hr.LA.max), quietest_seat_dba: r1(hr.LA.min), median_dbc: r1(hr.LC.median), limit: hr.limit && hr.limit.value != null ? { name: hr.limit.name || hr.limit.label || '', dba: hr.limit.value, kept: !!hr.okLimit } : undefined }; } catch (e) { } }
+      return out; });
+    const ground = new Set(hangs.filter(h => h.stands_on_the_ground).map(h => h.name)), rg0 = E.rigging(model, p.rig), rows = rg0.rows.filter(x => !ground.has(x.name)), rg = { rows, total: rows.reduce((a, x) => a + x.weight, 0), motors: rows.reduce((a, x) => a + x.motors, 0), wll: rg0.wll };
+    const advice = [];
+    hangs.forEach(h => (h.notes || []).forEach(n => advice.push(h.name + ': ' + n + '.')));
+    let fills = []; try { fills = E.fillLines(model).map(f => ({ between: f.a + ' / ' + f.b, spacing_m: f.spacing, coverage_joins_at_m: f.unity, overlap_from_m: f.limit })); fills.forEach(f => { if (f.coverage_joins_at_m > 4) advice.push(`${f.between}: ${f.spacing_m} m apart, so their coverage only joins ${f.coverage_joins_at_m} m out: closer spacing or more fills for the first rows.`); }); } catch (e) { }
+    let dc = null; if (!p.environment.outdoor) { try { const sol = model.sols.find(s => s.h.kind === 'array') || model.sols.find(s => s.h.kind === 'point'); const c = sol ? E.criticalDistance(sol, p, model) : null; if (c) dc = { hang: sol.h.name, q: c.Q, critical_distance_m: c.dc, note: 'Beyond this distance the room is louder than the direct sound of this hang (Hopkins–Stryker with Sabine, 1 kHz).' }; } catch (e) { } }
+    hangs.forEach(h => { if (h.hangs_on_two_points === false) advice.push(h.name + ' does not balance on two points: lower the trim, move it back or plan a pullback.'); });
+    phases.forEach(ph => { const sa = ph.sub_alignment; if (sa && sa.best_db - sa.as_designed_db >= 1) advice.push(`${ph.name}: subs and tops sum ${r1(sa.best_db - sa.as_designed_db)} dB better around ${sa.crossover_hz} Hz with ${sa.add_to_sub_delay_ms} ms on the subs${sa.sub_polarity === 'inverted' ? ', polarity inverted' : ''} (set "delay" on the sub hangs, or the tops when negative).`); });
+    phases.forEach(ph => { const a = ph.coverage && ph.coverage.audience; if (a && a.spread_db > 6) advice.push(`${ph.name}: ${a.spread_db} dB between the quietest and loudest 5 % of seats at ${band} Hz (6 dB or less is the usual aim): look at the zones with the widest spread, trim height, box count, or add fills.`);
+      if (ph.sti && ph.sti.with_noise < 0.5) advice.push(`${ph.name}: STI ${ph.sti.with_noise} with the crowd noise is below 0.5 (fair): speech will be hard to follow in the worst seats.`); });
+    Object.entries(listeners).forEach(([id, n]) => { const z = p.zones.find(x => x.id === id); if (!n && z && !['wall', 'corridor'].includes(z.kind)) advice.push('Zone ' + zname(id) + ' has no listeners: give it an outline (poly) of at least 3 points.'); });
+    return { ok: true, engine: 'Lapis PA engine: line-source and point-source models per octave band, air absorption ISO 9613-1, floor reflection, STI after IEC 60268-16. A planning estimate, not a measurement and not the maker\'s prediction software.',
+      frame: 'metres; x across, y depth with the stage end at high y, z up; bearing 0° = +y, 90° = +x', environment: { temp_c: p.environment.temp, rh_pct: p.environment.rh, outdoor: !!p.environment.outdoor, rt60_s: p.environment.outdoor ? null : p.acoustics.rt60, volume_m3: p.environment.outdoor ? null : p.acoustics.volume },
+      zones: p.zones.map(z => ({ id: z.id, name: z.name, kind: z.kind, listeners: listeners[z.id] })), hangs, phases,
+      fills: fills.length ? fills : undefined, room: dc || undefined,
+      rigging: { flown_total_kg: rg.total, motors: rg.motors, motor_wll_kg: rg.wll, hangs: rg.rows.map(x => ({ name: x.name, weight_kg: x.weight, per_motor_kg: x.perMotor, load_pct: x.pct })) }, advice };
+  }
+
+  /* RF frequency plan. Checks every channel with a frequency (spacing, intermodulation, licence-free ranges, tuning range);
+     o.assign: true also gives every own, unlocked channel without a frequency the lowest compatible one and returns the new show.
+     o.location = { lat, lon } (Netherlands) takes the TV channels in use there out of the licence-free ranges. */
+  function rfPlan(show, o) {
+    o = o || {}; const RF = o.RF; if (!RF) return err('', 'The RF logic is not loaded.', '');
+    const s = clone(show), P = s.rf = s.rf || {}; P.channels = Array.isArray(P.channels) ? P.channels : []; P.settings = Object.assign({}, RF.DEFAULTS, P.settings || {});
+    if (!P.channels.length) return err('rf.channels', 'This show has no wireless channels yet.', 'add them with set on "rf.channels.+" (see the guide, "RF")');
+    const loc = o.location || P.loc || null; if (o.ranges) { const t = Array.isArray(o.ranges) ? o.ranges.map(x => Array.isArray(x) ? x.join('-') : x).join(', ') : String(o.ranges); if (!RF.parseRanges(t).length) return err('ranges', 'No range could be read.', '"470-694, 823-832" (MHz)'); P.settings.region = 'CUSTOM'; P.settings.ranges = t; }
+    let region = RF.regionOf(P.settings).name, tv = null;
+    const had = RF.REGIONS.LOC;
+    if (loc && loc.lat != null && o.ZONE) { const chs = o.ZONE.channelsAt(loc); RF.REGIONS.LOC = { name: 'Netherlands · at ' + (loc.label || loc.lat + ', ' + loc.lon) + ' (TV channels removed)', ranges: o.ZONE.rangesAt(loc, !!loc.edge) };
+      P.settings.region = 'LOC'; region = RF.REGIONS.LOC.name; if (o.location) P.loc = Object.assign({ edge: false, q: loc.lat + ', ' + loc.lon, label: loc.label || loc.lat + ', ' + loc.lon }, loc);
+      tv = { in_use: chs.filter(c => c.status === 'tv').map(c => c.ch), edge_scan_first: chs.filter(c => c.status === 'edge').map(c => c.ch), free_mhz: RF.REGIONS.LOC.ranges.map(([a, b]) => a + '–' + b) }; }
+    else if (P.settings.region === 'LOC') P.settings.region = 'NL';
+    const assigned = [], unplaced = [];
+    try {
+      P.channels.forEach(c => { if (c.id == null) c.id = Math.random().toString(36).slice(2, 9); if (c.active == null) c.active = true; if (!c.role) c.role = 'own'; });
+      if (o.assign) P.channels.filter(c => c.role === 'own' && c.freq == null && !c.locked).forEach(c => { const f = RF.suggest(c, P.channels, P.settings, P.scan); if (f == null) unplaced.push(c.name || c.id); else { c.freq = f; assigned.push({ name: c.name || c.id, mhz: f }); } });
+      const an = RF.analyse(P.channels, P.settings, P.scan), rows = P.channels.map(c => { const a = an.res.get(c.id) || { level: 'none', msgs: [] }; return { name: c.name || c.id, mhz: c.freq, type: c.type || undefined, model: [c.maker, c.model].filter(Boolean).join(' ') || undefined, zone: c.zone || undefined, status: a.level === 'err' ? 'conflict' : a.level === 'warn' ? 'check' : a.level === 'none' ? 'no frequency' : 'ok', problems: a.msgs.filter(m => m.level !== 'info').map(m => m.msg) }; });
+      const st = P.settings, res = { ok: true, rules: { region, carrier_spacing_khz: st.cc, third_order_guard_khz: st.g3, three_transmitter_guard_khz: st.g33, fifth_order: st.fifth ? st.g5 + ' kHz' : 'not checked', step_khz: st.step, default_range_mhz: st.defRange },
+        channels: rows, summary: { channels: rows.length, ok: rows.filter(x => x.status === 'ok').length, conflicts: rows.filter(x => x.status === 'conflict').length, to_check: rows.filter(x => x.status === 'check').length, without_frequency: rows.filter(x => x.status === 'no frequency').length },
+        note: 'A calculation from the rules above: spacing, intermodulation and the licence-free ranges. It knows nothing of the air on the day: scan at the venue and check the licence before the show.' + (tv ? ' TV channels are an estimate from the transmitter list; confirm on microfoonbanden.nl.' : ' Give location { lat, lon } (Netherlands) to take the TV channels in use at the venue out.') };
+      if (tv) res.tv_channels = tv; if (o.assign) { res.assigned = assigned; if (unplaced.length) res.could_not_place = unplaced; res.show = s; }
+      return res;
+    } finally { if (had) RF.REGIONS.LOC = had; else delete RF.REGIONS.LOC; }
+  }
+  /* Ground sub array (pa-subarray.js: Olson; Hill 2010 / 2017; Christian 2009): the hangs of a gradient (cardioid) pair, an end-fire pair
+     or line, or a four-unit cluster, with positions, delays and polarity worked out. a = { kind: 'gradient' | 'end-fire pair' | 'end-fire line' | 'cluster',
+     model, boxes (per position), x, y, az (default -90: into the house), spacing (m), units (end-fire line), centre_hz (cluster), top_hz, centre_shift (m) }.
+     Returns the hangs to append to pa.hangs; nothing is written here. o.SUB = SDSubArray, o.PA = SDPAEngine. */
+  const SUB_KINDS = { gradient: 'grad', 'end-fire pair': 'endpair', 'end-fire line': 'endline', cluster: 'cluster' };
+  function subArray(show, a, o) {
+    o = o || {}; a = a || {}; const SUB = o.SUB, E = o.PA; if (!SUB || !E) return err('', 'The sub-array maths is not loaded.', '');
+    const kind = SUB_KINDS[a.kind]; if (!kind) return err('kind', 'Unknown kind of sub array "' + a.kind + '".', Object.keys(SUB_KINDS).map(k => '"' + k + '"').join(' | '));
+    const num = (v, d) => isFinite(+v) && v !== '' && v != null ? +v : d, model = a.model || 'SUB18', boxes = Math.max(1, Math.round(num(a.boxes, 1))), d = Math.max(0.1, num(a.spacing, 1.5)), shift = Math.max(0, num(a.centre_shift, 0)), top = num(a.top_hz, 100), fc = num(a.centre_hz, 52);
+    const p = paData(show), c = E.env(p).c, q = { x: num(a.x, 0), y: num(a.y, 0), az: num(a.az, -90), spacing: d, n: Math.max(2, Math.min(12, Math.round(num(a.units, 4)))), c, acShift: shift, half: !!a.half_delay, fc };
+    const r = kind === 'grad' ? SUB.gradientPair(q) : kind === 'endpair' ? SUB.endFirePair(q) : kind === 'endline' ? SUB.endFireArray(q) : SUB.cluster4(q);
+    const sp = kind === 'cluster' ? SUB.spacingFromHz(fc, c) : d, warnings = SUB.check({ spacing: sp, topHz: top, acShift: shift, c });
+    const prof = (E.GENERIC[model] || E.MAKER[model] || {}).profile || {}, boxH = prof.boxH || 0.55, n0 = p.hangs.filter(h => h.kind === 'sub').length;
+    if (prof.cardioid) warnings.push(model + ' is a cardioid box: it already holds its own gradient pair. These arrays are for plain (omni) subs.');
+    const hangs = r.hangs.map((h, i) => ({ name: 'SUB' + (n0 + i + 1) + (h.role ? ' ' + h.role : ''), kind: 'sub', model, n: boxes, x: r1(h.x), y: r1(h.y), az: q.az, trim: r2(boxes * boxH), delay: r2(h.delay), polarity: h.polarity }));
+    return { ok: true, kind: a.kind, summary: kind === 'cluster' ? `Square of ${r2(sp)} m (quarter wavelength at ${fc} Hz), 2 amplifier channels.` : `Effective spacing ${r2(SUB.effSpacing(d, kind === 'grad' ? shift : 0))} m, null behind at ${Math.round(r.f0)} Hz.` + (r.gainDb ? ` On-axis gain ${r1(r.gainDb)} dB.` : ''),
+      hangs, warnings, method: 'Olson 1973 (gradient sources); Hill et al., AES 128 paper 7971 (2010) and Hill, AES Conf. 2017 (spacing, cluster); Christian, AES 127 paper 7827 (2009) (end-fire). Delay = spacing / speed of sound (' + r1(c) + ' m/s here).',
+      note: 'The null holds at one frequency (speed of sound / 4 × spacing) and the pattern opens above about twice that. Place subs in front of the stage, not under it. Verify by measurement.' };
+  }
+  return { pa, rfPlan, paData, subArray, SUB_KINDS };
+})();
+if (typeof module !== 'undefined') module.exports = SDShowEngines; else (typeof window !== 'undefined' ? window : self).SDShowEngines = SDShowEngines;
+</script>
+<script id="showlink">/* Shows folder link (2.22). With Lapis Bridge running, the app and an AI client (the Lapis MCP server or CLI) work on the same
+   .lapis.json files in one folder on this computer. A show opened from the folder is linked to its file:
+   - every save in the app goes back to the file (a moment later, whole or not at all);
+   - when the file changes on disk (an assistant changed it), the open show follows within a few seconds, unless you have
+     changes of your own that are not in the file yet: then Lapis asks which one to keep.
+   The library goes to lapis-library.json in the same folder, so the tools check gear names against your own library.
+   The bridge only reads and writes show files inside the folder you chose (POST /v2/shows). Links are kept in this browser
+   (settings key "link": show id → { name, mtime }), not in the show. */
+const SDShowLink = (() => {
+  const L = { folder: null, files: [], err: '', busy: false, suggest: '' };
+  let pollT = null, libT = null, asking = false; const pushT = {}, DIRTY = new Set();   // per show id: a switch of show must not lose the last change of the one before
+  const links = () => store.get('link', {}), setLinks = m => store.set('link', m);
+  const linkOf = id => links()[id] || null;
+  const setLink = (id, v) => { const m = links(); if (v) m[id] = v; else delete m[id]; setLinks(m); };
+  const on = () => window.SDBridge && SDBridge.state() === 'ok';
+  const old = () => { const v = String(SDBridge.version ? SDBridge.version() : '').split('.').map(Number); return v.length >= 2 && (v[0] < 2 || (v[0] === 2 && v[1] < 22)); };   // the shows folder came with bridge 2.22
+  const call = body => SDBridge.call('/v2/shows', body);
+  const envelope = id => { const show = !id || id === S.show.id ? S.show : store.get('show.' + id, null); return show ? JSON.stringify({ app: 'lapis', version: 1, engine: typeof LAPIS_VERSION === 'string' ? LAPIS_VERSION : undefined, exported: new Date().toISOString(), show }, null, 2) + '\n' : null; };
+  const say = t => { const s = $('#saveState'); if (s) s.textContent = t; };
+  const hm = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  async function refresh(redraw) {
+    if (!on() || old()) { L.folder = null; return; }
+    try { const j = await call({ action: 'status' }); L.folder = j.folder || ''; L.files = j.files || []; L.err = j.error || ''; L.suggest = j.suggest || ''; if (L.folder && !j.library) pushLib(); } catch (e) { L.err = e.message; }
+    if (redraw && $('#dlg').open && $('#slSec')) openShows();
+  }
+  /* the part of the Shows dialog */
+  function section() {
+    if (!on()) return `<div id="slSec" class="sl-sec"><h3>Shows folder</h3><p class="mute">Start Lapis Bridge to keep shows as files in a folder on this computer, where an AI assistant with the Lapis tools can work on them too.</p></div>`;
+    if (old()) return `<div id="slSec" class="sl-sec"><h3>Shows folder</h3><p class="mute">This Lapis Bridge (${esc(SDBridge.version())}) is older than the app. Download the current Lapis Bridge to keep shows as files in a folder that an AI assistant can work on too.</p></div>`;
+    if (L.folder == null) { refresh(true); return `<div id="slSec" class="sl-sec"><h3>Shows folder</h3><p class="mute">Looking…</p></div>`; }
+    const cur = linkOf(S.show.id), linked = new Set(Object.values(links()).map(x => x.name));
+    const pick = `<div class="sl-pick"><input class="fld" id="slFolder" value="${esc(L.folder || L.suggest)}" aria-label="Shows folder on this computer" placeholder="/Users/you/Documents/Lapis shows"><button class="btn sm" data-act="sl-folder">${L.folder ? 'Change' : 'Use this folder'}</button></div>`;
+    if (!L.folder) return `<div id="slSec" class="sl-sec"><h3>Shows folder</h3><p class="mute">Choose a folder on this computer for show files. Shows you open from it stay in step with their file, so an AI assistant with the Lapis tools and you work on the same show.</p>${pick}${L.err ? `<p class="pa-w">${esc(L.err)}</p>` : ''}</div>`;
+    return `<div id="slSec" class="sl-sec"><h3>Shows folder</h3>${pick}${L.err ? `<p class="pa-w">${esc(L.err)}</p>` : ''}
+      ${cur ? `<p class="mute">The open show is linked to <b>${esc(cur.name)}</b>: your changes go to the file, and changes to the file come here. <button class="btn sm ghost" data-act="sl-unlink">Unlink</button></p>` : `<p class="mute">The open show is only in this browser. <button class="btn sm" data-act="sl-put">Put it in the folder</button></p>`}
+      ${L.files.length ? L.files.map(f => `<div class="showrow"><div class="n"><b>${esc(f.name.replace(/\.lapis\.json$/, ''))}</b><span class="mute">${new Date(f.mtime).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}${cur && cur.name === f.name ? ' · open now' : linked.has(f.name) ? ' · linked' : ''}</span></div>${cur && cur.name === f.name ? '' : `<button class="btn sm" data-act="sl-open" data-name="${esc(f.name)}">Open</button>`}</div>`).join('') : '<p class="mute">No show files in this folder yet.</p>'}</div>`;
+  }
+  async function setFolder(create) {
+    const v = ($('#slFolder') || {}).value || '';
+    try { const j = await call({ action: 'folder', folder: v, create: !!create }); L.folder = j.folder || ''; L.files = j.files || []; L.err = ''; if (L.folder) pushLib(); }
+    catch (e) { if (!create && /There is no folder/.test(e.message) && confirm(e.message + '\n\nMake it?')) return setFolder(true); L.err = e.message; }
+    openShows();
+  }
+  /* open a file of the folder: the show it was linked to before in this browser is brought up to date, otherwise a new one */
+  async function openFile(name) {
+    try {
+      const j = await call({ action: 'read', name }), o = window.SDShowSchema ? SDShowSchema.migrate(JSON.parse(j.text)).file : JSON.parse(j.text);
+      if (!o || o.app !== 'lapis' || !o.show) throw new Error(name + ' is not a Lapis show file.');
+      if (window.SDShowSchema) { const v = SDShowSchema.validate(o); if (v.errors.length && !confirm(`This show file has ${v.errors.length} problem${v.errors.length > 1 ? 's' : ''}, for example:\n\n${v.errors.slice(0, 3).map(e => e.path + ': ' + e.message).join('\n')}\n\nOpen it anyway?`)) return; }
+      if (saveT) saveNow();
+      const m = links(), had = Object.keys(m).find(id => m[id].name === name && S.index.list.some(x => x.id === id)), id = had || uid();
+      const sh = normalizeShow(Object.assign({}, o.show, { id, updated: o.show.updated || Date.now() }));
+      if (!had) S.index.list.push({ id, name: sh.meta.production || '', updated: sh.updated });
+      store.set('show.' + id, sh); setLink(id, { name, mtime: j.mtime }); DIRTY.delete(id); switchShow(id); say('Opened from the shows folder');
+    } catch (e) { L.err = e.message; openShows(); }
+  }
+  async function putCurrent() {
+    let name = safeName(S.show.meta.production) + '.lapis.json';
+    const typed = prompt('File name in the shows folder:', name); if (!typed) return; name = typed.replace(/(\.lapis)?(\.json)?$/i, '') + '.lapis.json';
+    try { const j = await call({ action: 'write', name, text: envelope(), fresh: true }); setLink(S.show.id, { name, mtime: j.mtime }); DIRTY.delete(S.show.id); await refresh(); }
+    catch (e) { L.err = e.message; }
+    openShows();
+  }
+  /* the app saved the open show: send it to its file a moment later */
+  function saved() { const id = S.show.id; if (!linkOf(id)) return; DIRTY.add(id); clearTimeout(pushT[id]); pushT[id] = setTimeout(() => push(id), 700); }
+  async function push(id, force) {
+    id = id || S.show.id; const k = linkOf(id), text = envelope(id); if (!k || !text || !on() || old() || asking) return;
+    try { const j = await call({ action: 'write', name: k.name, text, ifMtime: force ? undefined : k.mtime }); DIRTY.delete(id); setLink(id, { name: k.name, mtime: j.mtime }); }
+    catch (e) { if (e.status === 409) { if (id === S.show.id) return conflict(k); return; } say('Not written to the shows folder: ' + e.message); }
+  }
+  /* the file changed and so did the open show */
+  async function conflict(k) {
+    if (asking) return; asking = true;
+    try { if (confirm(`${k.name} changed in the shows folder (an assistant, or another window) while you changed the show here too.\n\nOK: take the file's version (your changes since the last save to the file are dropped).\nCancel: keep what is on screen and write it over the file.`)) await pull(k, true); else { asking = false; await push(S.show.id, true); } }
+    finally { asking = false; }
+  }
+  async function pull(k, force) {
+    const id = S.show.id;
+    try { const j = await call({ action: 'read', name: k.name }), o = JSON.parse(j.text); if (!o || !o.show || S.show.id !== id) return;
+      if (saveT) { clearTimeout(saveT); saveT = null; }
+      S.show = normalizeShow(Object.assign({}, o.show, { id })); store.set('show.' + id, S.show); setLink(id, { name: k.name, mtime: j.mtime }); DIRTY.delete(id);
+      const ent = S.index.list.find(x => x.id === id); if (ent) { ent.name = S.show.meta.production || ''; ent.updated = S.show.updated; store.set('shows', S.index); }
+      $('#showName').textContent = showTitle(S.show); const y = window.scrollY; go(S.tab); window.scrollTo(0, y); say('Updated from the shows folder ' + hm());
+      if (window.SDLog) SDLog.add('note', 'Show updated from ' + k.name);
+    } catch (e) { say('The shows folder could not be read: ' + e.message); }
+  }
+  /* every few seconds, while the page is in view: has the file of the open show changed? */
+  async function poll() {
+    const k = linkOf(S.show.id); if (!k || !on() || old() || asking || document.hidden || S.bootWant) return;
+    if ($('#dlg').open || (document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && document.activeElement.closest('#main'))) return;   // not while you type or a dialog is open
+    try { const j = await call({ action: 'stat', name: k.name }); if (!j.mtime) { say('The file ' + k.name + ' is gone from the shows folder'); return; }
+      if (j.mtime === k.mtime) return; if (DIRTY.has(S.show.id) || saveT) return conflict(k); await pull(k); } catch (e) { }
+  }
+  function libSaved() { clearTimeout(libT); libT = setTimeout(pushLib, 1500); }
+  async function pushLib() { if (!on() || !L.folder) return; try { await call({ action: 'library', text: JSON.stringify(S.lib, null, 1) }); } catch (e) { } }
+  ACT['sl-folder'] = () => setFolder(false);
+  ACT['sl-open'] = b => openFile(b.dataset.name);
+  ACT['sl-put'] = putCurrent;
+  ACT['sl-unlink'] = () => { setLink(S.show.id, null); openShows(); };
+  pollT = setInterval(poll, 4000);
+  setTimeout(() => refresh(false), 2500);
+  return { section, refresh, saved, libSaved, poll, push, linkOf, state: L };
+})();
+window.SDShowLink = SDShowLink;
+</script>
+<script>const LAPIS_VERSION = '2.23.0';</script>
 <script id="pa-venue">/* ===== Lapis PA venue: areas, room and room modes (2.11) =====
    - Areas: rectangles given by the centre of their front edge (x, y), width across, depth away from the stage, and the
      bearing of the depth direction (0° = north, clockwise). Tilt (a tribune) in degrees from the ground, rising from the
@@ -11207,6 +11768,7 @@ const SDHearing = (() => {
   return { OCT, A_W, C_W, ISO, splOf, phonOf, PROGRAMMES, LIMITS, EU, settings, compute, hoursTo, fmtTime, weighted, sumDb };
 })();
 if (typeof window !== 'undefined') window.SDHearing = SDHearing;
+if (typeof module !== 'undefined') module.exports = SDHearing;
 </script>
 <script id="pa-module">/* ===== Lapis PA design tab (Infrastructure) =====
    Design the loudspeaker system on the venue plan, for one or more phases of the same event:
@@ -12941,6 +13503,7 @@ const SDBridge = (() => {
   const bset = () => Object.assign({ port: 52400, key: '' }, store.get('bridge', {}));
   const base = () => 'http://127.0.0.1:' + bset().port;
   async function call(path, body) {
+    if (body && window.SDReview && !SDReview.gate(path, body)) throw new Error('Not sent: the assistant-made values wait for your review.');
     const r = await fetch(base() + path, { method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json', 'X-Lapis-Key': bset().key }, body: body ? JSON.stringify(body) : undefined });
     const j = await r.json().catch(() => ({})); if (!r.ok) throw Object.assign(new Error(j.error || 'Bridge error ' + r.status), { status: r.status }); return j;
   }
@@ -13013,7 +13576,7 @@ const SDBridge = (() => {
     async 'bridge-stop'() { if (!confirm('Stop the Lapis bridge? Desk control, scanning and monitoring stop until you start it again.')) return; try { await call('/v2/stop', {}); } catch (e) { } setTimeout(check, 600); }
   });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
-  return { check, open, state: () => S0.state, call };
+  return { check, open, state: () => S0.state, call, version: () => S0.version || '' };
 })();
 window.SDBridge = SDBridge;
 </script>
@@ -13326,53 +13889,42 @@ const SDTerm = (() => {
       const used = Object.values(S.show.inputs).filter(e => e && (e.src || e.mic)).length;
       return { show: S.show.meta, open_tab: TAB_LABEL[S.tab] || S.tab, console: R.mixer ? SD.label(R.mixer) : null, protocol: S.show.setup.protocol || null,
         stage_racks: R.racks.filter(Boolean).map(r => SD.label(r)), input_channels_on_console: R.c.totalIn, inputs_used: used, outputs: S.show.outputs.length,
-        monitor_desk: md ? (md.mixer || 'chosen, no console yet') + ' (' + md.link + ')' : null, setup_warnings: SD.setupIssues(S.show.setup, S.lib).map(x => x[1]),
+        monitor_desk: md ? (md.mixer || 'chosen, no console yet') + ' (' + md.link + ')' : null, setup_warnings: SD.setupIssues(S.show.setup, S.lib).map(x => x[1]), checks: SDShowOps.checks(S.show, { lib: S.lib, SD }).filter(c => c.level !== 'info').map(c => c.message),
         rf_channels: ((S.show.rf || {}).channels || []).length, network_devices: window.SDNet ? SDNet.devices().length : 0, liveprofessor: ((S.show.lp || {}).instances || []).length, snapshots: ((S.show.scenes || {}).list || []).length, cast_entries: Object.keys((S.show.scenes || {}).cast || {}).length, buses: ((S.show.buses || {}).list || []).length, effects: ((S.show.buses || {}).fx || []).length, other_equipment: (S.show.extraGear || []).length, show_control: { devices: ((S.show.control || {}).devices || []).length, midi_targets: ((S.show.control || {}).targets || []).length, timecode: ((S.show.control || {}).tc || []).length }, show_logs: (S.show.logs || []).length, wireless_receivers: ((S.show.wireless || {}).receivers || []).length, racks: (S.show.racks || []).length, cable_runs: ((S.show.cables || {}).runs || []).length, loose_cables: ((S.show.cables || {}).loose || []).length, personal_mixers: ((S.show.pm || {}).units || []).length, rf_accessories: ((S.show.rfGear || {}).rows || []).length, networks: ((S.show.network || {}).nets || []).map(x => x.name + (x.vlan ? ' VLAN ' + x.vlan : '')), patched_channels: Object.values(S.show.inputs || {}).filter(e => e && (e.port || e.portB)).length, qlab: ((S.show.qlab || {}).instances || []).map(x => (x.name || 'QLab') + (x.wsName ? ' · ' + x.wsName : '')), cue_sheet_cues: ((S.show.qlab || {}).sheet || { cues: [] }).cues.length,
         rider: rd ? { artist: rd.meta && rd.meta.artist, status: rd.meta && rd.meta.status, rows_read: (rd.rows || []).length, file: rd.file && rd.file.name } : null,
         parts: Object.keys(S.show).filter(k => !NO_EDIT.includes(k)), tabs: TAB_LABEL };
     },
     get({ path }) { return SDShowOps.get(S.show, path); },   // shared with the CLI and MCP (show-ops.js)
+    /* set, set_inputs and find_gear run the shared operations (show-ops.js), the same rules the CLI and the MCP server use:
+       gear must be in the library (another spelling becomes the exact name), 48V follows the microphone, a new output row gets
+       its bus and socket (per desk), and the answer carries the app's checks. Changes here are yours to see and undo, so they are not flagged for review. */
     async set({ changes }, req) {
-      const pl = SDShowOps.plan(S.show, changes);   // the same path rules, limits and structured errors as the CLI and MCP
-      if (pl.errors.length) return { error: pl.errors.map(e => e.message + (e.valid ? ' (valid: ' + e.valid + ')' : '')).join(' ') };
-      const plan = pl.plan;
-      if (!await confirmChanges(plan.map(x => `${x.ps.join('.')}: ${short(x.from)} → ${short(x.v)}`), req)) return { skipped: true, note: 'The user did not apply these changes.' };
+      const O = opsOpt(), r = SDShowOps.set(S.show, changes, O);
+      if (!r.ok) return { error: r.errors.map(e => e.message + (e.valid ? ' (valid: ' + e.valid + ')' : '')).join(' ') };
+      if (!r.changed.length) { req.changes += (changes || []).length; return { changed: [], note: 'The show already has these values.' }; }
+      if (!await confirmChanges(r.changed.map(c => `${c.path}: ${c.from} → ${c.to}`), req)) return { skipped: true, note: 'The user did not apply these changes.' };
       const before = JSON.stringify(S.show); snapshot(req);
-      for (const { ps, v } of plan) {
-        if (ps[0] === 'inputs' && ps.length === 3 && IN_FIELDS.includes(ps[2])) { const ch = +ps[1]; if (v === null) setIn(ch, ps[2], ps[2] === 'phantom' ? false : ''); else setIn(ch, ps[2], v); continue; }
-        if (ps[0] === 'inputs' && ps.length === 2) { const ch = +ps[1]; if (v === null) { delete S.show.inputs[ch]; continue; } S.show.inputs[ch] = {}; Object.entries(v || {}).forEach(([k, x]) => { if (IN_FIELDS.includes(k) && k !== 'phantom') setIn(ch, k, x); }); if (v && v.phantom != null && S.show.inputs[ch]) S.show.inputs[ch].phantom = !!v.phantom; continue; }
-        let o = S.show; for (let i = 0; i < ps.length - 1; i++) { const k = ps[i]; if (o[k] == null || typeof o[k] !== 'object') o[k] = /^\d+$/.test(ps[i + 1]) || ps[i + 1] === '+' ? [] : {}; o = o[k]; }
-        const last = ps[ps.length - 1];
-        if (last === '+') { if (!Array.isArray(o)) { S.show = normalizeShow(JSON.parse(before)); return { error: ps.slice(0, -1).join('.') + ' is not a list.' }; } if (ps[0] === 'outputs' && v && typeof v === 'object') { const r = newOutputRow(v); Object.assign(r, v); } else o.push(v); }
-        else if (v === null) { if (Array.isArray(o)) o.splice(+last, 1); else delete o[last]; }
-        else o[last] = v;
-      }
-      if (ps0(plan, 'outputs')) S.show.outputs.forEach(r => { if (r && !r.id) r.id = uid(); });
+      S.show = normalizeShow(r.show);
       const bad = refreshView(before); if (bad) return { error: bad };
-      queueSave(); req.changes += plan.length;
-      return { changed: plan.map(x => ({ path: x.ps.join('.'), from: short(x.from), to: short(getAt(x.ps)) })) };
+      queueSave(); req.changes += Math.max(r.changed.length, (changes || []).length);
+      const ck = SDShowOps.checks(S.show, O).filter(c => c.level !== 'info');
+      return ck.length ? { changed: r.changed, checks: ck } : { changed: r.changed };
     },
     async set_inputs({ rows }, req) {
       if (!Array.isArray(rows) || !rows.length) return { error: 'No rows given.' };
-      const R = SD.resolve(S.show.setup, S.lib), max = R.c.totalIn || 512, ok = [], miss = [], over = [];
+      const R = SD.resolve(S.show.setup, S.lib), max = R.c.totalIn || 512;
       const lib = q => { const t = String(q || '').trim(); if (!t) return ''; const ex = S.lib.mics.find(m => m.model.toLowerCase() === t.toLowerCase() || (m.brand + ' ' + m.model).toLowerCase() === t.toLowerCase()); return ex ? ex.model : (window.SDRider ? SDRider.matchMic(t) : ''); };
       const list = rows.slice(0, 256).filter(r => r && r.ch > 0);
+      const r = SDShowOps.setInputs(S.show, list.map(x => Object.assign({}, x, { phantom: x.phantom ? true : undefined })), Object.assign(opsOpt(), { match: lib, maxIn: max }));   // 48V: the library's, or asked for
+      if (!r.ok) return { error: r.errors.map(e => e.message + (e.valid ? ' (valid: ' + e.valid + ')' : '')).join(' ') };
       if (!await confirmChanges(list.map(r => `ch ${r.ch}: ${r.source || ''}${r.mic ? ' · ' + r.mic : ''}${r.phantom ? ' · 48V' : ''}`), req)) return { skipped: true, note: 'The user did not apply these changes.' };
       const before = JSON.stringify(S.show); snapshot(req);
-      list.forEach(r => { const ch = r.ch | 0; if (ch > max) over.push(ch);
-        const mic = lib(r.mic); S.show.inputs[ch] = {}; setIn(ch, 'src', String(r.source || '').slice(0, 60)); if (mic) setIn(ch, 'mic', mic); else if (r.mic) miss.push(`${ch}: ${r.mic}`);
-        const e = S.show.inputs[ch] || (S.show.inputs[ch] = {}); if (r.stand === 'tall') e.stand = 'T'; else if (r.stand === 'short') e.stand = 'S';
-        const notes = [r.notes, !mic && r.mic ? 'asked: ' + r.mic : ''].filter(Boolean).join(' · '); if (notes) e.notes = notes.slice(0, 200); if (r.phantom && mic) e.phantom = true;
-        if (!e.src && !e.mic && !e.notes) delete S.show.inputs[ch]; ok.push(ch); });
+      S.show = normalizeShow(r.show);
       const bad = refreshView(before); if (bad) return { error: bad };
-      queueSave(); req.changes += ok.length;
-      return { filled: ok.length, channels: ok, not_in_library: miss, beyond_console_channels: over.length ? `Channels ${over.join(', ')} are above the ${max} inputs of this console/rack setup.` : undefined };
+      queueSave(); req.changes += list.length;
+      return { filled: list.length, channels: list.map(x => x.ch | 0), not_in_library: r.not_in_library, beyond_console_channels: r.beyond_console_channels };
     },
-    find_gear({ query, category }) {
-      const cats = category && LIB_CATS.includes(category) ? [category] : LIB_CATS, words = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
-      const hits = []; cats.forEach(cat => (S.lib[cat] || []).forEach(it => { const hay = [it.brand, it.model, it.type, ...(it.aliases || [])].join(' ').toLowerCase(), flat = hay.replace(/[^a-z0-9]/g, ''); if (words.every(w => hay.includes(w) || flat.includes(w.replace(/[^a-z0-9]/g, '')))) hits.push({ category: cat, item: it }); }));
-      return { found: hits.length, items: hits.slice(0, 15).map(({ category, item }) => { const o = { category }; Object.entries(item).forEach(([k, v]) => { if (['src', 'checked', 'id', 'aliases'].includes(k) || v == null || v === '') return; o[k] = typeof v === 'string' && v.length > 160 ? v.slice(0, 157) + '…' : v; }); return o; }), note: hits.length > 15 ? 'More found: narrow the search.' : undefined };
-    },
+    find_gear({ query, category }) { const r = SDShowOps.findGear(S.lib, { query, category }, SD); return r.ok === false ? { error: r.errors[0].message + ' (valid: ' + r.errors[0].valid + ')' } : r; },
     go_to_tab({ tab }) { const t = String(tab || '').toLowerCase(), k = TABS[t] ? t : Object.keys(TAB_LABEL).find(x => TAB_LABEL[x].toLowerCase() === t || TAB_LABEL[x].toLowerCase().startsWith(t)); if (!k || !TABS[k]) return { error: 'No such tab. Tabs: ' + Object.entries(TAB_LABEL).map(([a, b]) => a + ' (' + b + ')').join(', ') }; go(k); return { opened: TAB_LABEL[k] }; },
     async read_rider({ text }, req) {
       if (!window.SDRider) return { error: 'The rider module is not loaded.' };
@@ -13383,7 +13935,7 @@ const SDTerm = (() => {
     },
     activity({ lines }) { const n = Math.max(1, Math.min(120, lines | 0 || 30)); return { lines: T.lines.filter(l => l.src !== 'you' && l.src !== 'ai').slice(-n).map(l => `${time(l.at)} [${TAG[l.src]}] ${l.text.slice(0, 220)}`) }; }
   };
-  const ps0 = (plan, root) => plan.some(x => x.ps[0] === root);
+  const opsOpt = () => ({ lib: S.lib, SD, schema: window.SDShowSchema, uid, generic: typeof SDPAEngine !== 'undefined' ? Object.fromEntries(Object.entries(SDPAEngine.GENERIC).map(([k, v]) => [k, v.type])) : undefined });
   const describe = c => { const a = c.args || {};
     return c.name === 'set' ? 'change ' + (a.changes || []).map(x => x.path).slice(0, 6).join(', ') + ((a.changes || []).length > 6 ? ' …' : '')
       : c.name === 'set_inputs' ? `fill ${(a.rows || []).length} input channel(s)` : c.name === 'get' ? 'read ' + (a.path || 'the show') : c.name === 'find_gear' ? `search the library for "${a.query}"` : c.name === 'go_to_tab' ? 'open ' + a.tab : c.name === 'read_rider' ? 'read the rider' : c.name === 'activity' ? 'look at the activity' : c.name; };

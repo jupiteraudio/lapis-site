@@ -1,0 +1,69 @@
+# Builds the stand-alone Lapis Bridge programs (no Node.js needed) from download/lapis-bridge.cjs of this site and publishes them
+# as the release "bridge-<version>" that the download page links to. Runs when a new version of the site is pushed, or by hand.
+name: bridge
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [version.json]
+permissions:
+  contents: write
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-latest, arch: x64 }
+          - { os: macos-latest,   arch: arm64 }
+          - { os: macos-15-intel, arch: x64 }
+          - { os: ubuntu-24.04,   arch: x64 }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22, architecture: '${{ matrix.arch }}' }
+      - name: Build the program
+        shell: bash
+        run: |
+          set -euo pipefail
+          # the file must be the one the download page gives the checksum of
+          want=$(grep ' lapis-bridge.cjs$' download/SHA256SUMS.txt | cut -d' ' -f1)
+          got=$(node -e "console.log(require('crypto').createHash('sha256').update(require('fs').readFileSync('download/lapis-bridge.cjs')).digest('hex'))")
+          [ "$want" = "$got" ] || { echo "download/lapis-bridge.cjs does not match SHA256SUMS.txt"; exit 1; }
+          mkdir -p build out
+          echo '{ "main": "download/lapis-bridge.cjs", "output": "build/sea-prep.blob", "disableExperimentalSEAWarning": true }' > build/sea-config.json
+          node --experimental-sea-config build/sea-config.json
+          case "$RUNNER_OS" in Windows) os=windows; ext=.exe;; macOS) os=macos; ext=;; *) os=linux; ext=;; esac
+          bin="out/lapis-bridge-$os-${{ matrix.arch }}$ext"
+          cp "$(node -e 'console.log(process.execPath)')" "$bin"
+          if [ "$RUNNER_OS" = macOS ]; then codesign --remove-signature "$bin"; fi
+          extra=""; if [ "$RUNNER_OS" = macOS ]; then extra="--macho-segment-name NODE_SEA"; fi
+          npx --yes postject@1.0.0-alpha.6 "$bin" NODE_SEA_BLOB build/sea-prep.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 $extra
+          if [ "$RUNNER_OS" = macOS ]; then codesign --sign - "$bin"; fi
+          chmod +x "$bin" || true
+          "$bin" --port 0 --selftest
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lapis-bridge-${{ matrix.os }}-${{ matrix.arch }}
+          path: out/lapis-bridge-*
+          if-no-files-found: error
+  release:
+    needs: package
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with: { path: art }
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          v=$(node -e "console.log(require('./version.json').version)")
+          mkdir zips
+          for d in art/*/; do n=$(basename "$d"); chmod +x "$d"/* || true; (cd "$d" && zip -q -r "../../zips/$n.zip" .); done
+          (cd zips && sha256sum *.zip) > SHA256.txt
+          printf 'Lapis Bridge %s as a stand-alone program: no Node.js needed. Built by this repository from download/lapis-bridge.cjs of the same version.\n\nNot code-signed. macOS: `chmod +x lapis-bridge-macos-*` and `xattr -d com.apple.quarantine lapis-bridge-macos-*` once, then start it. Windows: SmartScreen › More info › Run anyway.\n\nSHA-256:\n```\n%s\n```\n' "$v" "$(cat SHA256.txt)" > notes.md
+          if gh release view "bridge-$v" >/dev/null 2>&1; then gh release upload "bridge-$v" zips/*.zip --clobber; gh release edit "bridge-$v" --notes-file notes.md
+          else gh release create "bridge-$v" zips/*.zip --title "Lapis Bridge $v" --notes-file notes.md; fi
