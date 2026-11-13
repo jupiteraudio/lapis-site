@@ -15,16 +15,17 @@ You design; a person operates. You work on a show file (`.lapis.json`) in the sh
 
 When the person asks why a number is what it is, or how far to trust it, read `lapis_guide` with `topic: "science"` and answer from it: the method, its source, and whether it is checked or an estimate.
 
-## Order of work
+## Order of work: the order of Lapis's tabs
+
+Build the show the way the person reads it in Lapis, tab by tab, left to right. Each tab builds on the ones before it: the Inputs tab, for one, only shows channels once a console and its racks are set.
 
 1. `lapis_list_shows`, then `lapis_overview` of an existing show, or `lapis_new_show` for a new one.
-2. **Console and racks.** `lapis_find_gear` with the console name (category `mixers`): the answer lists `works_with`, the stage racks and protocols that fit. Then one `lapis_set`:
-   `setup.mixer`, `setup.protocol`, `setup.rack1` (and `setup.rack2` … `rack32`; `"none"` = no rack).
-3. **Inputs.** `lapis_set_inputs` with one row per channel (below). Check `not_in_library` and `beyond_console_channels` in the answer.
-4. **Outputs.** `lapis_set` with one `outputs.+` change per row (below).
-5. **Show details.** `meta.production`, `meta.venue`, `meta.soundcheck`, `meta.showtime`, `meta.revision`, `meta.notes` (all text).
-6. When asked for: the monitor desk, the wireless plan (`lapis_rf_plan`), the PA design (`lapis_pa`). See below.
-7. `lapis_overview` and `lapis_validate`: fix what the checks say.
+2. **Rider and Metadata.** What the riders and messages say, then the show details: `meta.production`, `meta.venue`, `meta.soundcheck`, `meta.showtime`, `meta.revision`, `meta.notes` (all text).
+3. **Desks & racks.** `lapis_find_gear` with the console name (category `mixers`): the answer lists `works_with`, the stage racks and protocols that fit. Then one `lapis_set`: `setup.mixer`, `setup.protocol`, `setup.rack1` (and `setup.rack2` … `rack32`; `"none"` = no rack); the monitor desk if there is one. **If the console or racks are not known, ask the person before going further**: do not fill inputs into a show without a console.
+4. **PA design, Network, Power, RF**, when asked for or when the riders give them: the PA design (`lapis_pa`), the wireless plan (`lapis_rf_plan`). See below.
+5. **Inputs.** `lapis_set_inputs` with one row per channel (below). Check `not_in_library` and `beyond_console_channels` in the answer.
+6. **Outputs.** `lapis_set` with one `outputs.+` change per row (below).
+7. **Equipment and Diagram** follow from the above; `lapis_overview` and `lapis_validate`: fix what the checks say.
 8. `lapis_render` for the documents. Tell the person where they are and what waits for review.
 
 ## Console and racks (`setup`)
