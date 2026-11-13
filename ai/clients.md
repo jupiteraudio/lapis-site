@@ -43,6 +43,20 @@ From the repository: command `node`, arguments `["/path/to/Lapis/tools/lapis-mcp
 
 After changing the tools or updating Lapis, restart the AI client: it reads the tool list when it starts the server.
 
+## An assistant in your own browser, live (2.27)
+
+An assistant that can work in your browser (Claude in Chrome, for example) opens Lapis in a tab next to yours, on the same address (the website or the bridge's page), and works through `window.LapisAPI` in that tab:
+
+```js
+LapisAPI.shows()                                   // the shows in this browser; LapisAPI.open(id or name)
+LapisAPI.overview(); LapisAPI.get('inputs'); LapisAPI.checks(); LapisAPI.findGear('beta 91')
+LapisAPI.set([{ path: 'inputs.1', value: { src: 'Kick in', mic: 'Beta 91A' } }])                // preview
+LapisAPI.set([{ path: 'inputs.1', value: { src: 'Kick in', mic: 'Beta 91A' } }], { apply: true })  // saved; your tab follows
+LapisAPI.setInputs(rows, { apply: true }); LapisAPI.pa(); LapisAPI.rfPlan({ assign: true, apply: true }); LapisAPI.review()
+```
+
+Same rules as the MCP tools (`show-ops.js`): library gear only, 48V follows the microphone, applied values flagged for your review. Your tab shows each change within a second and says "Changed by the assistant"; your own edits reach the assistant's tab the same way. Nothing goes to the bridge or a desk. No set-up: both tabs only need to be in the same browser on the same address.
+
 ## ChatGPT and other web assistants (2.26)
 
 ChatGPT runs in OpenAI's cloud: it cannot start a program on your computer or reach 127.0.0.1, only an https address on the internet. The bridge can offer the same design-time tools on a secret address and carry it through a tunnel:

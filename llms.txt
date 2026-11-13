@@ -1,6 +1,6 @@
 # Lapis
 
-> Live-sound system design and show documentation: riders, input and output lists, desks and stage racks, RF, PA design, equipment, system diagrams. Lapis has no language model of its own: it gives an AI assistant deterministic tools (a local MCP server and a CLI) and a checked show file format. Agents design, humans operate; the tools never touch hardware. Version 2.26.0.
+> Live-sound system design and show documentation: riders, input and output lists, desks and stage racks, RF, PA design, equipment, system diagrams. Lapis has no language model of its own: it gives an AI assistant deterministic tools (a local MCP server and a CLI) and a checked show file format. Agents design, humans operate; the tools never touch hardware. Version 2.27.0.
 
 ## For AI assistants
 
